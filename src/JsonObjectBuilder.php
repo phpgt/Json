@@ -19,14 +19,7 @@ class JsonObjectBuilder extends DataObjectBuilder {
 	public function fromJsonDecoded(
 		object|array|string|int|float|bool|null $jsonDecoded
 	):JsonObject {
-		if(is_object($jsonDecoded)) {
-			/** @var JsonKvpObject $jsonData */
-			$jsonData = $this->fromObject(
-				$jsonDecoded,
-				JsonKvpObject::class
-			);
-		}
-		elseif(is_array($jsonDecoded)
+		if(is_array($jsonDecoded)
 		&& !is_int(key($jsonDecoded))) {
 // The JSON could represent an primitive indexed array, but the json could have
 // been decoded as an associative array too. Deal with associative arrays first.
@@ -53,7 +46,11 @@ class JsonObjectBuilder extends DataObjectBuilder {
 			$jsonData = new JsonArrayPrimitive();
 		}
 		else {
-
+			/** @var JsonKvpObject $jsonData */
+			$jsonData = $this->fromObject(
+				$jsonDecoded,
+				JsonKvpObject::class
+			);
 		}
 
 		if($jsonData instanceof JsonPrimitive) {
