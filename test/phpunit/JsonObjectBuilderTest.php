@@ -3,6 +3,7 @@ namespace Gt\Json\Test;
 
 use Gt\Json\JsonKvpObject;
 use Gt\Json\JsonObjectBuilder;
+use Gt\Json\JsonPrimitive\JsonArrayPrimitive;
 use Gt\Json\JsonPrimitive\JsonBoolPrimitive;
 use Gt\Json\JsonPrimitive\JsonFloatPrimitive;
 use Gt\Json\JsonPrimitive\JsonIntPrimitive;
@@ -106,5 +107,14 @@ class JsonObjectBuilderTest extends TestCase {
 		$jsonObject = $sut->fromJsonDecoded($json);
 		self::assertInstanceOf(JsonStringPrimitive::class, $jsonObject);
 		self::assertSame("Example!", $jsonObject->getPrimitiveValue());
+	}
+
+	public function testFromJsonDecodedArray() {
+		$sut = new JsonObjectBuilder();
+		$json = json_decode($this->jsonStringArray);
+		/** @var JsonArrayPrimitive $jsonObject */
+		$jsonObject = $sut->fromJsonDecoded($json);
+		self::assertInstanceOf(JsonArrayPrimitive::class, $jsonObject);
+		self::assertSame(["one", "two", "three"], $jsonObject->getPrimitiveValue());
 	}
 }

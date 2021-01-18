@@ -2,6 +2,7 @@
 namespace Gt\Json;
 
 use Gt\DataObject\DataObjectBuilder;
+use Gt\Json\JsonPrimitive\JsonArrayPrimitive;
 use Gt\Json\JsonPrimitive\JsonBoolPrimitive;
 use Gt\Json\JsonPrimitive\JsonFloatPrimitive;
 use Gt\Json\JsonPrimitive\JsonIntPrimitive;
@@ -25,17 +26,13 @@ class JsonObjectBuilder extends DataObjectBuilder {
 				JsonKvpObject::class
 			);
 		}
-		elseif(is_array($jsonDecoded)) {
-// The JSON could represent an indexed array, but the json could have been
-// decoded as an associative array too. Deal with both outcomes here.
-			if(is_int(key($jsonDecoded))) {
-
-			}
-			else {
-				$jsonData = $this->fromJsonDecoded(
-					(object)$jsonDecoded
-				);
-			}
+		elseif(is_array($jsonDecoded)
+		&& !is_int(key($jsonDecoded))) {
+// The JSON could represent an primitive indexed array, but the json could have
+// been decoded as an associative array too. Deal with associative arrays first.
+			$jsonData = $this->fromJsonDecoded(
+				(object)$jsonDecoded
+			);
 		}
 		elseif(is_null($jsonDecoded)) {
 			$jsonData = new JsonNullPrimitive();
@@ -51,6 +48,12 @@ class JsonObjectBuilder extends DataObjectBuilder {
 		}
 		elseif(is_string($jsonDecoded)) {
 			$jsonData = new JsonStringPrimitive();
+		}
+		elseif(is_array($jsonDecoded)) {
+			$jsonData = new JsonArrayPrimitive();
+		}
+		else {
+
 		}
 
 		if($jsonData instanceof JsonPrimitive) {
