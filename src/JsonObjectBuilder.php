@@ -2,6 +2,8 @@
 namespace Gt\Json;
 
 use Gt\DataObject\DataObjectBuilder;
+use Gt\Json\JsonPrimitive\JsonBoolPrimitive;
+use Gt\Json\JsonPrimitive\JsonIntPrimitive;
 use Gt\Json\JsonPrimitive\JsonNullPrimitive;
 
 class JsonObjectBuilder extends DataObjectBuilder {
@@ -34,6 +36,14 @@ class JsonObjectBuilder extends DataObjectBuilder {
 		}
 		elseif(is_null($jsonDecoded)) {
 			$jsonData = new JsonNullPrimitive();
+		}
+		elseif(is_bool($jsonDecoded)) {
+			$jsonData = (new JsonBoolPrimitive())
+				->withPrimitiveValue($jsonDecoded);
+		}
+		elseif(is_int($jsonDecoded)) {
+			$jsonData = (new JsonIntPrimitive())
+				->withPrimitiveValue($jsonDecoded);
 		}
 
 		return $jsonData;

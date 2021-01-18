@@ -3,6 +3,8 @@ namespace Gt\Json\Test;
 
 use Gt\Json\JsonKvpObject;
 use Gt\Json\JsonObjectBuilder;
+use Gt\Json\JsonPrimitive\JsonBoolPrimitive;
+use Gt\Json\JsonPrimitive\JsonIntPrimitive;
 use Gt\Json\JsonPrimitive\JsonNullPrimitive;
 use PHPUnit\Framework\TestCase;
 
@@ -61,9 +63,28 @@ class JsonObjectBuilderTest extends TestCase {
 
 	public function testFromJsonDecodedNull() {
 		$sut = new JsonObjectBuilder();
+		$json = json_decode($this->jsonStringNull);
 		/** @var JsonNullPrimitive $jsonObject */
-		$jsonObject = $sut->fromJsonString($this->jsonStringNull);
+		$jsonObject = $sut->fromJsonDecoded($json);
 		self::assertInstanceOf(JsonNullPrimitive::class, $jsonObject);
 		self::assertNull($jsonObject->getPrimitiveValue());
+	}
+
+	public function testFromJsonDecodedBool() {
+		$sut = new JsonObjectBuilder();
+		$json = json_decode($this->jsonStringBool);
+		/** @var JsonBoolPrimitive $jsonObject */
+		$jsonObject = $sut->fromJsonDecoded($json);
+		self::assertInstanceOf(JsonBoolPrimitive::class, $jsonObject);
+		self::assertTrue($jsonObject->getPrimitiveValue());
+	}
+
+	public function testFromJsonDecodedInt() {
+		$sut = new JsonObjectBuilder();
+		$json = json_decode($this->jsonStringInt);
+		/** @var JsonIntPrimitive $jsonObject */
+		$jsonObject = $sut->fromJsonDecoded($json);
+		self::assertInstanceOf(JsonIntPrimitive::class, $jsonObject);
+		self::assertSame(123, $jsonObject->getPrimitiveValue());
 	}
 }
