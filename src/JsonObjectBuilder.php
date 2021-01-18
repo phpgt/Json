@@ -9,6 +9,7 @@ use Gt\Json\JsonPrimitive\JsonIntPrimitive;
 use Gt\Json\JsonPrimitive\JsonNullPrimitive;
 use Gt\Json\JsonPrimitive\JsonPrimitive;
 use Gt\Json\JsonPrimitive\JsonStringPrimitive;
+use stdClass;
 
 class JsonObjectBuilder extends DataObjectBuilder {
 	public function fromJsonString(string $jsonString):JsonObject {
@@ -43,6 +44,14 @@ class JsonObjectBuilder extends DataObjectBuilder {
 			$jsonData = new JsonStringPrimitive();
 		}
 		elseif(is_array($jsonDecoded)) {
+			array_walk_recursive($jsonDecoded, function(&$element) {
+				if($element instanceof StdClass) {
+					$element = $this->fromObject(
+						$element,
+						JsonKvpObject::class
+					);
+				}
+			});
 			$jsonData = new JsonArrayPrimitive();
 		}
 		else {

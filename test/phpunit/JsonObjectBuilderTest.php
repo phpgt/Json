@@ -10,6 +10,7 @@ use Gt\Json\JsonPrimitive\JsonIntPrimitive;
 use Gt\Json\JsonPrimitive\JsonNullPrimitive;
 use Gt\Json\JsonPrimitive\JsonStringPrimitive;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class JsonObjectBuilderTest extends TestCase {
 	private string $jsonStringSimpleKVP = <<<JSON
@@ -25,7 +26,6 @@ class JsonObjectBuilderTest extends TestCase {
 			"tags": ["test", "data", "json", "classic"]
 		}
 		JSON;
-
 	private string $jsonStringNull = <<<JSON
 		null
 		JSON;
@@ -43,6 +43,16 @@ class JsonObjectBuilderTest extends TestCase {
 		JSON;
 	private string $jsonStringArray = <<<JSON
 		["one", "two", "three"]
+		JSON;
+	private string $jsonStringArrayContainingSimpleKVP = <<<JSON
+		[
+			"one",
+			"two",
+			{
+				"id": 123,
+				"name": "Example"
+			}
+		]
 		JSON;
 
 
@@ -126,7 +136,7 @@ class JsonObjectBuilderTest extends TestCase {
 		self::assertSame(["one", "two", "three"], $jsonObject->getPrimitiveValue());
 	}
 
-	public function testFromJsonDecodedContainingArray() {
+	public function testFromJsonStringContainingArray() {
 		$sut = new JsonObjectBuilder();
 		$jsonObject = $sut->fromJsonString($this->jsonStringContainingArray);
 		self::assertEquals(123, $jsonObject->getInt("id"));
@@ -151,5 +161,20 @@ class JsonObjectBuilderTest extends TestCase {
 		self::assertEquals("data", $array[1]);
 		self::assertEquals("json", $array[2]);
 		self::assertEquals("classic", $array[3]);
+	}
+
+	public function testFromJsonStringArrayContainingSimpleKVP() {
+		$sut = new JsonObjectBuilder();
+		/** @var JsonArrayPrimitive $jsonObject */
+		$jsonObject = $sut->fromJsonString($this->jsonStringArrayContainingSimpleKVP);
+		self::assertInstanceOf(JsonArrayPrimitive::class, $jsonObject);
+		$array = $jsonObject->getPrimitiveValue();
+		self::assertCount(3, $array);
+		self::assertEquals("one", $array[0]);
+		self::assertEquals("two", $array[1]);
+		$object = $array[2];
+		self::assertInstanceOf(JsonKvpObject::class, $object);
+		self::assertEquals(123, $object->getInt("id"));
+		self::assertEquals("Example", $object->getString("name"));
 	}
 }
