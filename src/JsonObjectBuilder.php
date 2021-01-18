@@ -3,8 +3,10 @@ namespace Gt\Json;
 
 use Gt\DataObject\DataObjectBuilder;
 use Gt\Json\JsonPrimitive\JsonBoolPrimitive;
+use Gt\Json\JsonPrimitive\JsonFloatPrimitive;
 use Gt\Json\JsonPrimitive\JsonIntPrimitive;
 use Gt\Json\JsonPrimitive\JsonNullPrimitive;
+use Gt\Json\JsonPrimitive\JsonPrimitive;
 
 class JsonObjectBuilder extends DataObjectBuilder {
 	public function fromJsonString(string $jsonString):JsonObject {
@@ -38,12 +40,17 @@ class JsonObjectBuilder extends DataObjectBuilder {
 			$jsonData = new JsonNullPrimitive();
 		}
 		elseif(is_bool($jsonDecoded)) {
-			$jsonData = (new JsonBoolPrimitive())
-				->withPrimitiveValue($jsonDecoded);
+			$jsonData = (new JsonBoolPrimitive());
 		}
 		elseif(is_int($jsonDecoded)) {
-			$jsonData = (new JsonIntPrimitive())
-				->withPrimitiveValue($jsonDecoded);
+			$jsonData = (new JsonIntPrimitive());
+		}
+		elseif(is_float($jsonDecoded)) {
+			$jsonData = (new JsonFloatPrimitive());
+		}
+
+		if($jsonData instanceof JsonPrimitive) {
+			$jsonData = $jsonData->withPrimitiveValue($jsonDecoded);
 		}
 
 		return $jsonData;

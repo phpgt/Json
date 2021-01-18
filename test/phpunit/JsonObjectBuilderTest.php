@@ -4,6 +4,7 @@ namespace Gt\Json\Test;
 use Gt\Json\JsonKvpObject;
 use Gt\Json\JsonObjectBuilder;
 use Gt\Json\JsonPrimitive\JsonBoolPrimitive;
+use Gt\Json\JsonPrimitive\JsonFloatPrimitive;
 use Gt\Json\JsonPrimitive\JsonIntPrimitive;
 use Gt\Json\JsonPrimitive\JsonNullPrimitive;
 use PHPUnit\Framework\TestCase;
@@ -86,5 +87,14 @@ class JsonObjectBuilderTest extends TestCase {
 		$jsonObject = $sut->fromJsonDecoded($json);
 		self::assertInstanceOf(JsonIntPrimitive::class, $jsonObject);
 		self::assertSame(123, $jsonObject->getPrimitiveValue());
+	}
+
+	public function testFromJsonDecodedFloat() {
+		$sut = new JsonObjectBuilder();
+		$json = json_decode($this->jsonStringFloat);
+		/** @var JsonFloatPrimitive $jsonObject */
+		$jsonObject = $sut->fromJsonDecoded($json);
+		self::assertInstanceOf(JsonFloatPrimitive::class, $jsonObject);
+		self::assertSame(123.456, $jsonObject->getPrimitiveValue());
 	}
 }
