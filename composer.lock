@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhpGt/DataObject.git",
-                "reference": "ed90d732048bdb6abdec3323c2fd73dd02b8235e"
+                "reference": "5aec09c05b52cb1fb9e8dcbb8164c3a0834d6ee4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhpGt/DataObject/zipball/ed90d732048bdb6abdec3323c2fd73dd02b8235e",
-                "reference": "ed90d732048bdb6abdec3323c2fd73dd02b8235e",
+                "url": "https://api.github.com/repos/PhpGt/DataObject/zipball/5aec09c05b52cb1fb9e8dcbb8164c3a0834d6ee4",
+                "reference": "5aec09c05b52cb1fb9e8dcbb8164c3a0834d6ee4",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-01-18T16:43:44+00:00"
+            "time": "2021-01-18T22:20:00+00:00"
         },
         {
             "name": "phpgt/typesafegetter",

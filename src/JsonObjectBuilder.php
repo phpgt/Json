@@ -1,9 +1,9 @@
 <?php
 namespace Gt\Json;
 
-use Gt\DataObject\Builder;
+use Gt\DataObject\DataObjectBuilder;
 
-class JsonObjectBuilder extends Builder {
+class JsonObjectBuilder extends DataObjectBuilder {
 	public function fromJsonString(string $jsonString):JsonObject {
 		$json = json_decode($jsonString);
 		return $this->fromJsonDecoded($json);
