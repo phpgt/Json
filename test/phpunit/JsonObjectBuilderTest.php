@@ -20,4 +20,22 @@ class JsonObjectBuilderTest extends TestCase {
 		self::assertEquals(123, $jsonObject->getInt("id"));
 		self::assertEquals("Example", $jsonObject->getString("name"));
 	}
+
+	public function testFromJsonDecoded() {
+		$sut = new JsonObjectBuilder();
+		$json = json_decode($this->jsonStringSimpleKVP);
+		$jsonObject = $sut->fromJsonDecoded($json);
+		self::assertInstanceOf(JsonKvpObject::class, $jsonObject);
+		self::assertEquals(123, $jsonObject->getInt("id"));
+		self::assertEquals("Example", $jsonObject->getString("name"));
+	}
+
+	public function testFromJsonDecodedAsArray() {
+		$sut = new JsonObjectBuilder();
+		$json = json_decode($this->jsonStringSimpleKVP, true);
+		$jsonObject = $sut->fromJsonDecoded($json);
+		self::assertInstanceOf(JsonKvpObject::class, $jsonObject);
+		self::assertEquals(123, $jsonObject->getInt("id"));
+		self::assertEquals("Example", $jsonObject->getString("name"));
+	}
 }
