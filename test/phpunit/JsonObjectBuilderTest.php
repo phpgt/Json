@@ -7,6 +7,7 @@ use Gt\Json\JsonPrimitive\JsonBoolPrimitive;
 use Gt\Json\JsonPrimitive\JsonFloatPrimitive;
 use Gt\Json\JsonPrimitive\JsonIntPrimitive;
 use Gt\Json\JsonPrimitive\JsonNullPrimitive;
+use Gt\Json\JsonPrimitive\JsonStringPrimitive;
 use PHPUnit\Framework\TestCase;
 
 class JsonObjectBuilderTest extends TestCase {
@@ -96,5 +97,14 @@ class JsonObjectBuilderTest extends TestCase {
 		$jsonObject = $sut->fromJsonDecoded($json);
 		self::assertInstanceOf(JsonFloatPrimitive::class, $jsonObject);
 		self::assertSame(123.456, $jsonObject->getPrimitiveValue());
+	}
+
+	public function testFromJsonDecodedString() {
+		$sut = new JsonObjectBuilder();
+		$json = json_decode($this->jsonStringString);
+		/** @var JsonStringPrimitive $jsonObject */
+		$jsonObject = $sut->fromJsonDecoded($json);
+		self::assertInstanceOf(JsonStringPrimitive::class, $jsonObject);
+		self::assertSame("Example!", $jsonObject->getPrimitiveValue());
 	}
 }

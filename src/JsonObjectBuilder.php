@@ -7,6 +7,7 @@ use Gt\Json\JsonPrimitive\JsonFloatPrimitive;
 use Gt\Json\JsonPrimitive\JsonIntPrimitive;
 use Gt\Json\JsonPrimitive\JsonNullPrimitive;
 use Gt\Json\JsonPrimitive\JsonPrimitive;
+use Gt\Json\JsonPrimitive\JsonStringPrimitive;
 
 class JsonObjectBuilder extends DataObjectBuilder {
 	public function fromJsonString(string $jsonString):JsonObject {
@@ -40,13 +41,16 @@ class JsonObjectBuilder extends DataObjectBuilder {
 			$jsonData = new JsonNullPrimitive();
 		}
 		elseif(is_bool($jsonDecoded)) {
-			$jsonData = (new JsonBoolPrimitive());
+			$jsonData = new JsonBoolPrimitive();
 		}
 		elseif(is_int($jsonDecoded)) {
-			$jsonData = (new JsonIntPrimitive());
+			$jsonData = new JsonIntPrimitive();
 		}
 		elseif(is_float($jsonDecoded)) {
-			$jsonData = (new JsonFloatPrimitive());
+			$jsonData = new JsonFloatPrimitive();
+		}
+		elseif(is_string($jsonDecoded)) {
+			$jsonData = new JsonStringPrimitive();
 		}
 
 		if($jsonData instanceof JsonPrimitive) {
