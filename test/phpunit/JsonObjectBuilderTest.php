@@ -18,6 +18,14 @@ class JsonObjectBuilderTest extends TestCase {
 			"name": "Example"
 		}
 		JSON;
+	private string $jsonStringContainingArray = <<<JSON
+		{
+			"id": 123,
+			"name": "Example",
+			"tags": ["test", "data", "json", "classic"]
+		}
+		JSON;
+
 	private string $jsonStringNull = <<<JSON
 		null
 		JSON;
@@ -116,5 +124,18 @@ class JsonObjectBuilderTest extends TestCase {
 		$jsonObject = $sut->fromJsonDecoded($json);
 		self::assertInstanceOf(JsonArrayPrimitive::class, $jsonObject);
 		self::assertSame(["one", "two", "three"], $jsonObject->getPrimitiveValue());
+	}
+
+	public function testFromJsonDecodedContainingArray() {
+		$sut = new JsonObjectBuilder();
+		$jsonObject = $sut->fromJsonString($this->jsonStringContainingArray);
+		self::assertEquals(123, $jsonObject->getInt("id"));
+		self::assertEquals("Example", $jsonObject->getString("name"));
+		$array = $jsonObject->getArray("tags");
+		self::assertCount(4, $array);
+		self::assertEquals("test", $array[0]);
+		self::assertEquals("data", $array[1]);
+		self::assertEquals("json", $array[2]);
+		self::assertEquals("classic", $array[3]);
 	}
 }
