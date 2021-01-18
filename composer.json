@@ -4,7 +4,9 @@
 
 	"require": {
 		"php": ">=8.0",
-		"ext-json": "*"
+		"ext-json": "*",
+
+		"phpgt/dataobject": "dev-master"
 	},
 
 	"require-dev": {
