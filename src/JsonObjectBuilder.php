@@ -2,6 +2,7 @@
 namespace Gt\Json;
 
 use Gt\DataObject\DataObjectBuilder;
+use Gt\Json\JsonPrimitive\JsonNullPrimitive;
 
 class JsonObjectBuilder extends DataObjectBuilder {
 	public function fromJsonString(string $jsonString):JsonObject {
@@ -30,6 +31,9 @@ class JsonObjectBuilder extends DataObjectBuilder {
 					(object)$jsonDecoded
 				);
 			}
+		}
+		elseif(is_null($jsonDecoded)) {
+			$jsonData = new JsonNullPrimitive();
 		}
 
 		return $jsonData;
