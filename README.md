@@ -1,7 +1,7 @@
 Structured, type-safe, immutable JSON objects. 
 ==============================================
 
-Built on top of [PHP.Gt/DataObject][dataobject], this repository adds JSON-specific compatibility. The main usage will be the `JsonObjectBuilder` class that can be used to build a type of `JsonObject` from a JSON string or decoded JSON object (from `json_decode`).
+Built on top of [PHP.Gt/DataObject][dataobject], this repository adds JSON-specific compatibility. The main usage will be via the `JsonObjectBuilder` class that can be used to build a type of `JsonObject` from a JSON string or decoded JSON object (from `json_decode`).
 
 The purpose of using these classes to represent decoded JSON data is to provide a type-safe, immutable interface to the enclosed data.
 
@@ -44,9 +44,9 @@ Usage example
 -------------
 
 ```php
-use \Gt\Json\JsonObjectBuilder;
+use Gt\Json\JsonObjectBuilder;
 use Gt\Json\JsonKvpObject;
-use \Gt\Json\JsonPrimitive\JsonPrimitive;
+use Gt\Json\JsonPrimitive\JsonPrimitive;
 
 $response = file_get_contents("https://example.com/details.json");
 $builder = new JsonObjectBuilder();
