@@ -6,7 +6,7 @@
 		"php": ">=8.0",
 		"ext-json": "*",
 
-		"phpgt/dataobject": "dev-master"
+		"phpgt/dataobject": "^1.0"
 	},
 
 	"require-dev": {
