@@ -17,6 +17,9 @@ class JsonObjectBuilder extends DataObjectBuilder {
 		return $this->fromJsonDecoded($json);
 	}
 
+	/**
+	 * @param object|array<mixed>|string|int|float|bool|null $jsonDecoded
+	 */
 	public function fromJsonDecoded(
 		object|array|string|int|float|bool|null $jsonDecoded
 	):JsonObject {
