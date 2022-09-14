@@ -14,11 +14,19 @@ use stdClass;
 class JsonObjectBuilder extends DataObjectBuilder {
 	public function fromJsonString(string $jsonString):JsonObject {
 		$json = json_decode($jsonString);
+		if(is_null($json)) {
+// It's completely reasonable to have a null value here, so we need to check the
+// error code before throwing an exception.
+			if(json_last_error() !== JSON_ERROR_NONE) {
+				throw new JsonDecodeException(json_last_error_msg());
+			}
+		}
+
 		return $this->fromJsonDecoded($json);
 	}
 
 	/**
-	 * @param object|array<mixed>|string|int|float|bool|null $jsonDecoded
+	 * @param object|array|string|int|float|bool|null $jsonDecoded
 	 */
 	public function fromJsonDecoded(
 		object|array|string|int|float|bool|null $jsonDecoded

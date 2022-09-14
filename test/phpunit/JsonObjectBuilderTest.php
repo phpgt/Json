@@ -1,6 +1,7 @@
 <?php
 namespace Gt\Json\Test;
 
+use Gt\Json\JsonDecodeException;
 use Gt\Json\JsonKvpObject;
 use Gt\Json\JsonObjectBuilder;
 use Gt\Json\JsonPrimitive\JsonArrayPrimitive;
@@ -176,5 +177,21 @@ class JsonObjectBuilderTest extends TestCase {
 		self::assertInstanceOf(JsonKvpObject::class, $object);
 		self::assertEquals(123, $object->getInt("id"));
 		self::assertEquals("Example", $object->getString("name"));
+	}
+
+	public function testFromJson_syntaxError() {
+		$jsonString = '{ "name": "Greg", "title: "Clumsy programmer!" }';
+		$sut = new JsonObjectBuilder();
+		self::expectException(JsonDecodeException::class);
+		self::expectExceptionMessage("Error decoding JSON: Syntax error");
+		$sut->fromJsonString($jsonString);
+	}
+
+	public function testFromJson_illegalCharacters() {
+		$jsonString = "{ \"name\": \"Greg\", \"favourite_characters\": \"\xB1\x31\" }";
+		$sut = new JsonObjectBuilder();
+		self::expectException(JsonDecodeException::class);
+		self::expectExceptionMessage("Error decoding JSON: Malformed UTF-8 characters, possibly incorrectly encoded");
+		$sut->fromJsonString($jsonString);
 	}
 }
