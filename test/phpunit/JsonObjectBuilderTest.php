@@ -194,4 +194,26 @@ class JsonObjectBuilderTest extends TestCase {
 		self::expectExceptionMessage("Error decoding JSON: Malformed UTF-8 characters, possibly incorrectly encoded");
 		$sut->fromJsonString($jsonString);
 	}
+
+	public function testFromJson_depth() {
+		$jsonString = <<<JSON
+		{
+			"name": "Greg",
+			"address": {
+				"home": {
+					"addressId": 105
+				},
+				"work": {
+					"addressId": 210
+				}
+			}
+		}
+		JSON;
+
+		$sut = new JsonObjectBuilder(2);
+		$json = $sut->fromJsonString($jsonString);
+		$address = $json->getObject("address");
+		$homeAddress = $address->getObject("home");
+		self::assertSame(105, $homeAddress->getInt("addressId"));
+	}
 }
