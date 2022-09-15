@@ -15,6 +15,7 @@ use stdClass;
 class JsonObjectBuilder extends DataObjectBuilder {
 	public function __construct(
 		private readonly int $depth = 512,
+		private readonly int $flags = 0,
 	) {
 	}
 
@@ -23,7 +24,7 @@ class JsonObjectBuilder extends DataObjectBuilder {
 			$json = json_decode(
 				$jsonString,
 				depth: $this->depth,
-				flags: JSON_THROW_ON_ERROR
+				flags: JSON_THROW_ON_ERROR | $this->flags,
 			);
 		}
 		catch(NativeJsonException $exception) {

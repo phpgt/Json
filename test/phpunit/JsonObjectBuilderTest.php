@@ -215,4 +215,18 @@ class JsonObjectBuilderTest extends TestCase {
 		self::expectExceptionMessage("Error decoding JSON: Maximum stack depth exceeded");
 		$sut->fromJsonString($jsonString);
 	}
+
+	public function testFromJson_customFlag_bigInt() {
+		$jsonString = '{"num": 9876543210987654321 }';
+
+		$sut = new JsonObjectBuilder();
+		$json = $sut->fromJsonString($jsonString);
+		$num = $json->getString("num");
+		self::assertStringContainsString("E", $num);
+
+		$sut = new JsonObjectBuilder(flags: JSON_BIGINT_AS_STRING);
+		$json = $sut->fromJsonString($jsonString);
+		$num = $json->getString("num");
+		self::assertSame("9876543210987654321", $num);
+	}
 }
