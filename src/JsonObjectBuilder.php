@@ -40,9 +40,10 @@ class JsonObjectBuilder extends DataObjectBuilder {
 	public function fromJsonDecoded(
 		object|array|string|int|float|bool|null $jsonDecoded
 	):JsonObject {
+		/** @noinspection PhpDeprecatedStdLibCallInspection */
 		if(is_array($jsonDecoded)
 		&& !is_int(key($jsonDecoded))) {
-// The JSON could represent an primitive indexed array, but the json could have
+// The JSON could represent a primitive indexed array, but the json could have
 // been decoded as an associative array too. Deal with associative arrays first.
 			$jsonData = $this->fromJsonDecoded(
 				(object)$jsonDecoded

@@ -11,7 +11,6 @@ use Gt\Json\JsonPrimitive\JsonIntPrimitive;
 use Gt\Json\JsonPrimitive\JsonNullPrimitive;
 use Gt\Json\JsonPrimitive\JsonStringPrimitive;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 class JsonObjectBuilderTest extends TestCase {
 	private string $jsonStringSimpleKVP = <<<JSON
