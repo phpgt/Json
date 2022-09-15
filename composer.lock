@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "phpgt/dataobject",
-            "version": "v1.0.0",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhpGt/DataObject.git",
-                "reference": "02e08144a0ed4b2bf022baf125803dfbbfc1b487"
+                "reference": "68a0d2396417b66835199707123345091464f4de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhpGt/DataObject/zipball/02e08144a0ed4b2bf022baf125803dfbbfc1b487",
-                "reference": "02e08144a0ed4b2bf022baf125803dfbbfc1b487",
+                "url": "https://api.github.com/repos/PhpGt/DataObject/zipball/68a0d2396417b66835199707123345091464f4de",
+                "reference": "68a0d2396417b66835199707123345091464f4de",
                 "shasum": ""
             },
             "require": {
@@ -26,8 +26,8 @@
                 "phpgt/typesafegetter": "^1.0"
             },
             "require-dev": {
-                "phpstan/phpstan": ">=0.12.64",
-                "phpunit/phpunit": "9.*"
+                "phpstan/phpstan": "^v1.8",
+                "phpunit/phpunit": "^v9.5"
             },
             "type": "library",
             "autoload": {
@@ -48,7 +48,7 @@
             "description": " Structured, type-safe, immutable data transfer.",
             "support": {
                 "issues": "https://github.com/PhpGt/DataObject/issues",
-                "source": "https://github.com/PhpGt/DataObject/tree/v1.0.0"
+                "source": "https://github.com/PhpGt/DataObject/tree/v1.0.3"
             },
             "funding": [
                 {
@@ -56,7 +56,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-03-15T18:03:44+00:00"
+            "time": "2022-09-14T19:29:54+00:00"
         },
         {
             "name": "phpgt/typesafegetter",
@@ -1906,5 +1906,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
