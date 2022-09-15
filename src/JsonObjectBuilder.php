@@ -31,7 +31,7 @@ class JsonObjectBuilder extends DataObjectBuilder {
 	}
 
 	/**
-	 * @param object|array|string|int|float|bool|null $jsonDecoded
+	 * @param object|array<mixed>|string|int|float|bool|null $jsonDecoded
 	 */
 	public function fromJsonDecoded(
 		object|array|string|int|float|bool|null $jsonDecoded
