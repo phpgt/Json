@@ -9,6 +9,7 @@ use Gt\Json\JsonPrimitive\JsonIntPrimitive;
 use Gt\Json\JsonPrimitive\JsonNullPrimitive;
 use Gt\Json\JsonPrimitive\JsonPrimitive;
 use Gt\Json\JsonPrimitive\JsonStringPrimitive;
+use JsonException as NativeJsonException;
 use stdClass;
 
 class JsonObjectBuilder extends DataObjectBuilder {
@@ -18,13 +19,15 @@ class JsonObjectBuilder extends DataObjectBuilder {
 	}
 
 	public function fromJsonString(string $jsonString):JsonObject {
-		$json = json_decode($jsonString, depth: $this->depth);
-		if(is_null($json)) {
-// It's completely reasonable to have a null value here, so we need to check the
-// error code before throwing an exception.
-			if(json_last_error() !== JSON_ERROR_NONE) {
-				throw new JsonDecodeException(json_last_error_msg());
-			}
+		try {
+			$json = json_decode(
+				$jsonString,
+				depth: $this->depth,
+				flags: JSON_THROW_ON_ERROR
+			);
+		}
+		catch(NativeJsonException $exception) {
+			throw new JsonDecodeException($exception->getMessage());
 		}
 
 		return $this->fromJsonDecoded($json);

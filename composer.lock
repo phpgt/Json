@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f48b785533048a61d02f7e70c650982",
+    "content-hash": "7f8afeff72fc2fd8f7dd8e7558b14302",
     "packages": [
         {
             "name": "phpgt/dataobject",
@@ -1902,7 +1902,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "ext-json": "*"
     },
     "platform-dev": [],

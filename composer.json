@@ -3,7 +3,7 @@
 	"description": " Structured, type-safe, immutable JSON objects.",
 
 	"require": {
-		"php": ">=8.0",
+		"php": ">=8.1",
 		"ext-json": "*",
 
 		"phpgt/dataobject": "^1.0"
