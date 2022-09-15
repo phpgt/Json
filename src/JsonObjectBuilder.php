@@ -15,6 +15,7 @@ use stdClass;
 class JsonObjectBuilder extends DataObjectBuilder {
 	public function __construct(
 		private readonly int $depth = 512,
+		private readonly int $flags = 0,
 	) {
 	}
 
@@ -23,7 +24,7 @@ class JsonObjectBuilder extends DataObjectBuilder {
 			$json = json_decode(
 				$jsonString,
 				depth: $this->depth,
-				flags: JSON_THROW_ON_ERROR
+				flags: JSON_THROW_ON_ERROR | $this->flags,
 			);
 		}
 		catch(NativeJsonException $exception) {
@@ -39,9 +40,10 @@ class JsonObjectBuilder extends DataObjectBuilder {
 	public function fromJsonDecoded(
 		object|array|string|int|float|bool|null $jsonDecoded
 	):JsonObject {
+		/** @noinspection PhpDeprecatedStdLibCallInspection */
 		if(is_array($jsonDecoded)
 		&& !is_int(key($jsonDecoded))) {
-// The JSON could represent an primitive indexed array, but the json could have
+// The JSON could represent a primitive indexed array, but the json could have
 // been decoded as an associative array too. Deal with associative arrays first.
 			$jsonData = $this->fromJsonDecoded(
 				(object)$jsonDecoded
