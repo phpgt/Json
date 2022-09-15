@@ -194,4 +194,25 @@ class JsonObjectBuilderTest extends TestCase {
 		self::expectExceptionMessage("Error decoding JSON: Malformed UTF-8 characters, possibly incorrectly encoded");
 		$sut->fromJsonString($jsonString);
 	}
+
+	public function testFromJson_depth() {
+		$jsonString = <<<JSON
+		{
+			"name": "Greg",
+			"address": {
+				"home": {
+					"addressId": 105
+				},
+				"work": {
+					"addressId": 210
+				}
+			}
+		}
+		JSON;
+
+		$sut = new JsonObjectBuilder(3);
+		self::expectException(JsonDecodeException::class);
+		self::expectExceptionMessage("Error decoding JSON: Maximum stack depth exceeded");
+		$sut->fromJsonString($jsonString);
+	}
 }
