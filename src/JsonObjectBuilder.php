@@ -12,8 +12,13 @@ use Gt\Json\JsonPrimitive\JsonStringPrimitive;
 use stdClass;
 
 class JsonObjectBuilder extends DataObjectBuilder {
+	public function __construct(
+		private readonly int $depth = 512,
+	) {
+	}
+
 	public function fromJsonString(string $jsonString):JsonObject {
-		$json = json_decode($jsonString);
+		$json = json_decode($jsonString, depth: $this->depth);
 		if(is_null($json)) {
 // It's completely reasonable to have a null value here, so we need to check the
 // error code before throwing an exception.

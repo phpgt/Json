@@ -210,10 +210,9 @@ class JsonObjectBuilderTest extends TestCase {
 		}
 		JSON;
 
-		$sut = new JsonObjectBuilder(2);
-		$json = $sut->fromJsonString($jsonString);
-		$address = $json->getObject("address");
-		$homeAddress = $address->getObject("home");
-		self::assertSame(105, $homeAddress->getInt("addressId"));
+		$sut = new JsonObjectBuilder(3);
+		self::expectException(JsonDecodeException::class);
+		self::expectExceptionMessage("Error decoding JSON: Maximum stack depth exceeded");
+		$sut->fromJsonString($jsonString);
 	}
 }

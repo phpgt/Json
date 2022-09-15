@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "phpgt/dataobject",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhpGt/DataObject.git",
-                "reference": "68a0d2396417b66835199707123345091464f4de"
+                "reference": "dde4c5ba9e4cd0e048e4558107da32ce3f9ce7e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhpGt/DataObject/zipball/68a0d2396417b66835199707123345091464f4de",
-                "reference": "68a0d2396417b66835199707123345091464f4de",
+                "url": "https://api.github.com/repos/PhpGt/DataObject/zipball/dde4c5ba9e4cd0e048e4558107da32ce3f9ce7e4",
+                "reference": "dde4c5ba9e4cd0e048e4558107da32ce3f9ce7e4",
                 "shasum": ""
             },
             "require": {
@@ -48,7 +48,7 @@
             "description": " Structured, type-safe, immutable data transfer.",
             "support": {
                 "issues": "https://github.com/PhpGt/DataObject/issues",
-                "source": "https://github.com/PhpGt/DataObject/tree/v1.0.3"
+                "source": "https://github.com/PhpGt/DataObject/tree/v1.0.4"
             },
             "funding": [
                 {
@@ -56,7 +56,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-09-14T19:29:54+00:00"
+            "time": "2022-09-15T09:21:05+00:00"
         },
         {
             "name": "phpgt/typesafegetter",
