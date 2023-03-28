@@ -10,16 +10,16 @@ The purpose of using these classes to represent decoded JSON data is to provide 
 <a href="https://giub.com/PhpGt/Json/actions" target="_blank">
 	<img src="https://badge.status.php.gt/json-build.svg" alt="Build status" />
 </a>
-<a href="https://scrutinizer-ci.com/g/PhpGt/Json" target="_blank">
+<a href="https://app.codacy.com/gh/PhpGt/Json" target="_blank">
 	<img src="https://badge.status.php.gt/json-quality.svg" alt="Code quality" />
 </a>
-<a href="https://scrutinizer-ci.com/g/PhpGt/Json" target="_blank">
+<a href="https://app.codecov.io/gh/PhpGt/Json" target="_blank">
 	<img src="https://badge.status.php.gt/json-coverage.svg" alt="Code coverage" />
 </a>
 <a href="https://packagist.org/packages/PhpGt/Json" target="_blank">
 	<img src="https://badge.status.php.gt/json-version.svg" alt="Current version" />
 </a>
-<a href="http://www.php.gt/json" target="_blank">
+<a href="https://www.php.gt/json" target="_blank">
 	<img src="https://badge.status.php.gt/json-docs.svg" alt="PHP.Gt/Json documentation" />
 </a>
 

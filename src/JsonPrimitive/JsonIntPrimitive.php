@@ -3,6 +3,8 @@ namespace Gt\Json\JsonPrimitive;
 
 class JsonIntPrimitive extends JsonPrimitive {
 	public function getPrimitiveValue():int {
-		return (int)$this->value;
+		/** @var bool|int|float|string|null $value */
+		$value = $this->value;
+		return (int)$value;
 	}
 }
