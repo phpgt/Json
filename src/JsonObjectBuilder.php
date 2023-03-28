@@ -13,6 +13,10 @@ use JsonException as NativeJsonException;
 use stdClass;
 
 class JsonObjectBuilder extends DataObjectBuilder {
+	/**
+	 * @param int<1, max> $depth
+	 * @param int $flags
+	 */
 	public function __construct(
 		private readonly int $depth = 512,
 		private readonly int $flags = 0,
