@@ -10,8 +10,8 @@
 	},
 
 	"require-dev": {
-		"phpstan/phpstan": "^v1.8",
-		"phpunit/phpunit": "^v9.5"
+		"phpstan/phpstan": "^1.10",
+		"phpunit/phpunit": "^10.0"
 	},
 
 	"license": "MIT",
