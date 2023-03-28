@@ -60,8 +60,8 @@ class JsonObjectBuilderTest extends TestCase {
 		$sut = new JsonObjectBuilder();
 		$jsonObject = $sut->fromJsonString($this->jsonStringSimpleKVP);
 		self::assertInstanceOf(JsonKvpObject::class, $jsonObject);
-		self::assertEquals(123, $jsonObject->getInt("id"));
-		self::assertEquals("Example", $jsonObject->getString("name"));
+		self::assertSame(123, $jsonObject->getInt("id"));
+		self::assertSame("Example", $jsonObject->getString("name"));
 	}
 
 	public function testFromJsonDecoded() {
@@ -69,8 +69,8 @@ class JsonObjectBuilderTest extends TestCase {
 		$json = json_decode($this->jsonStringSimpleKVP);
 		$jsonObject = $sut->fromJsonDecoded($json);
 		self::assertInstanceOf(JsonKvpObject::class, $jsonObject);
-		self::assertEquals(123, $jsonObject->getInt("id"));
-		self::assertEquals("Example", $jsonObject->getString("name"));
+		self::assertSame(123, $jsonObject->getInt("id"));
+		self::assertSame("Example", $jsonObject->getString("name"));
 	}
 
 	public function testFromJsonDecodedAsArray() {
@@ -78,8 +78,8 @@ class JsonObjectBuilderTest extends TestCase {
 		$json = json_decode($this->jsonStringSimpleKVP, true);
 		$jsonObject = $sut->fromJsonDecoded($json);
 		self::assertInstanceOf(JsonKvpObject::class, $jsonObject);
-		self::assertEquals(123, $jsonObject->getInt("id"));
-		self::assertEquals("Example", $jsonObject->getString("name"));
+		self::assertSame(123, $jsonObject->getInt("id"));
+		self::assertSame("Example", $jsonObject->getString("name"));
 	}
 
 	public function testFromJsonDecodedNull() {
@@ -139,28 +139,28 @@ class JsonObjectBuilderTest extends TestCase {
 	public function testFromJsonStringContainingArray() {
 		$sut = new JsonObjectBuilder();
 		$jsonObject = $sut->fromJsonString($this->jsonStringContainingArray);
-		self::assertEquals(123, $jsonObject->getInt("id"));
-		self::assertEquals("Example", $jsonObject->getString("name"));
+		self::assertSame(123, $jsonObject->getInt("id"));
+		self::assertSame("Example", $jsonObject->getString("name"));
 		$array = $jsonObject->getArray("tags");
 		self::assertCount(4, $array);
-		self::assertEquals("test", $array[0]);
-		self::assertEquals("data", $array[1]);
-		self::assertEquals("json", $array[2]);
-		self::assertEquals("classic", $array[3]);
+		self::assertSame("test", $array[0]);
+		self::assertSame("data", $array[1]);
+		self::assertSame("json", $array[2]);
+		self::assertSame("classic", $array[3]);
 	}
 
 	public function testFromJsonDecodedContainingArrayWhenDecodedAsArray() {
 		$sut = new JsonObjectBuilder();
 		$json = json_decode($this->jsonStringContainingArray, true);
 		$jsonObject = $sut->fromJsonDecoded($json);
-		self::assertEquals(123, $jsonObject->getInt("id"));
-		self::assertEquals("Example", $jsonObject->getString("name"));
+		self::assertSame(123, $jsonObject->getInt("id"));
+		self::assertSame("Example", $jsonObject->getString("name"));
 		$array = $jsonObject->getArray("tags");
 		self::assertCount(4, $array);
-		self::assertEquals("test", $array[0]);
-		self::assertEquals("data", $array[1]);
-		self::assertEquals("json", $array[2]);
-		self::assertEquals("classic", $array[3]);
+		self::assertSame("test", $array[0]);
+		self::assertSame("data", $array[1]);
+		self::assertSame("json", $array[2]);
+		self::assertSame("classic", $array[3]);
 	}
 
 	public function testFromJsonStringArrayContainingSimpleKVP() {
@@ -170,12 +170,12 @@ class JsonObjectBuilderTest extends TestCase {
 		self::assertInstanceOf(JsonArrayPrimitive::class, $jsonObject);
 		$array = $jsonObject->getPrimitiveValue();
 		self::assertCount(3, $array);
-		self::assertEquals("one", $array[0]);
-		self::assertEquals("two", $array[1]);
+		self::assertSame("one", $array[0]);
+		self::assertSame("two", $array[1]);
 		$object = $array[2];
 		self::assertInstanceOf(JsonKvpObject::class, $object);
-		self::assertEquals(123, $object->getInt("id"));
-		self::assertEquals("Example", $object->getString("name"));
+		self::assertSame(123, $object->getInt("id"));
+		self::assertSame("Example", $object->getString("name"));
 	}
 
 	public function testFromJson_syntaxError() {

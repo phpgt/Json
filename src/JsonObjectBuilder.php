@@ -35,12 +35,11 @@ class JsonObjectBuilder extends DataObjectBuilder {
 	}
 
 	/**
-	 * @param object|array<mixed>|string|int|float|bool|null $jsonDecoded
+	 * @param object|array<int, mixed>|string|int|float|bool|null $jsonDecoded
 	 */
 	public function fromJsonDecoded(
 		object|array|string|int|float|bool|null $jsonDecoded
 	):JsonObject {
-		/** @noinspection PhpDeprecatedStdLibCallInspection */
 		if(is_array($jsonDecoded)
 		&& !is_int(key($jsonDecoded))) {
 // The JSON could represent a primitive indexed array, but the json could have
