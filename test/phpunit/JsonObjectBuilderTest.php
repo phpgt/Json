@@ -228,4 +228,13 @@ class JsonObjectBuilderTest extends TestCase {
 		$num = $json->getString("num");
 		self::assertSame("9876543210987654321", $num);
 	}
+
+	public function testFromJson_emptyNestedArray():void {
+		$jsonString = '{"key1": [1, 2, 3], "key2": []}';
+
+		$sut = new JsonObjectBuilder();
+		$json = $sut->fromJsonString($jsonString);
+		self::assertSame([1, 2, 3], $json->getArray("key1", "int"));
+		self::assertSame([], $json->getArray("key2", "int"));
+	}
 }
