@@ -44,4 +44,41 @@ class JsonObjectTest extends TestCase {
 		$sut = (new JsonNullPrimitive());
 		self::assertSame("null", (string)$sut);
 	}
+
+	public function testForeach():void {
+		$sut = new JsonKvpObject();
+		$i = 0;
+		foreach($sut as $value) {
+			$i++;
+		}
+		self::assertFalse(isset($value));
+		self::assertSame(0, $i);
+	}
+
+	public function testForeach_iteratesOverKeyValue():void {
+		$kvp = [
+			"key1" => "value1",
+			"key2" => "value2",
+			"key3" => [1, 2, 3],
+		];
+		$sut = new JsonKvpObject();
+		foreach($kvp as $key => $value) {
+			$sut = $sut->with($key, $value);
+		}
+
+		$iteratedKeyList = [];
+		$iteratedValueList = [];
+		foreach($sut as $key => $value) {
+			array_push($iteratedKeyList, $key);
+			array_push($iteratedValueList, $value);
+		}
+
+		self::assertSame("key1", $iteratedKeyList[0]);
+		self::assertSame("key2", $iteratedKeyList[1]);
+		self::assertSame("key3", $iteratedKeyList[2]);
+
+		self::assertSame("value1", $iteratedValueList[0]);
+		self::assertSame("value2", $iteratedValueList[1]);
+		self::assertSame([1, 2, 3], $iteratedValueList[2]);
+	}
 }
