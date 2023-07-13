@@ -6,12 +6,12 @@
 		"php": ">=8.1",
 		"ext-json": "*",
 
-		"phpgt/dataobject": "^1.0"
+		"phpgt/dataobject": "^1.0.7"
 	},
 
 	"require-dev": {
 		"phpstan/phpstan": "^1.10",
-		"phpunit/phpunit": "^10.0",
+		"phpunit/phpunit": "^10.1",
 		"phpmd/phpmd": "^2.13",
 		"squizlabs/php_codesniffer": "^3.7"
 	},

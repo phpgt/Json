@@ -10,9 +10,7 @@ abstract class JsonPrimitive extends JsonObject {
 
 	abstract public function getPrimitiveValue():mixed;
 
-	/**
-	 * @param bool|int|float|string|array<int, mixed>|null $value
-	 */
+	/** @param bool|int|float|string|array<int, mixed>|null $value */
 	public function withPrimitiveValue(
 		object|bool|int|float|string|array|null $value
 	):static {
