@@ -64,7 +64,7 @@ jobs:
       - name: Store coverage data
         uses: actions/upload-artifact@v4
         with:
-          name: code-coverage
+          name: code-coverage-${{ matrix.php }}-${{ github.run_number }}
           path: _coverage
 
   coverage:
