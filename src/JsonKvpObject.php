@@ -3,7 +3,7 @@ namespace Gt\Json;
 
 use Iterator;
 
-/** @implements Iterator<int|string, mixed> */
+/** @implements Iterator<null|int|string, mixed> */
 class JsonKvpObject extends JsonObject implements Iterator {
 	public function rewind():void {
 		reset($this->data);
@@ -17,7 +17,7 @@ class JsonKvpObject extends JsonObject implements Iterator {
 		next($this->data);
 	}
 
-	public function key():int|string {
+	public function key():null|int|string {
 		return key($this->data);
 	}
 
