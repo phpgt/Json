@@ -6,7 +6,8 @@
 		"php": ">=8.1",
 		"ext-json": "*",
 
-		"phpgt/dataobject": "^1.0.7"
+		"phpgt/dataobject": "^1.0.7",
+		"opis/json-schema": "^2.4"
 	},
 
 	"require-dev": {
