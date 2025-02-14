@@ -1,0 +1,25 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"title": "Simple object schema",
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string"
+		},
+		"colour": {
+			"type": "string"
+		},
+		"food": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		}
+	},
+	"required": [
+		"name",
+		"colour",
+		"food"
+	],
+	"additionalProperties": false
+}
