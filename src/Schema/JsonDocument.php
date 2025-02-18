@@ -13,7 +13,7 @@ class JsonDocument {
 			return "";
 		}
 
-		return json_encode($this->jsonObject);
+		return json_encode($this->jsonObject) ?: "";
 	}
 
 	public function setJson(JsonObject $jsonObject):void {

@@ -5,6 +5,7 @@ use Gt\Json\JsonObject;
 use Gt\Json\JsonPrimitive\JsonPrimitive;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Helper;
+use Opis\JsonSchema\Validator as OpisValidator;
 
 class Validator {
 	public function __construct(
@@ -13,7 +14,7 @@ class Validator {
 
 	public function validate(JsonObject $json):ValidationResult {
 		if($this->schema) {
-			$validator = new \Opis\JsonSchema\Validator(
+			$validator = new OpisValidator(
 				stop_at_first_error: false,
 			);
 			$opisSchema = Helper::toJSON($this->schema);
