@@ -3,9 +3,6 @@ namespace Gt\Json\Schema;
 
 use Gt\Json\JsonObject;
 use Gt\Json\JsonPrimitive\JsonPrimitive;
-use Opis\JsonSchema\Errors\ErrorFormatter;
-use Opis\JsonSchema\Helper;
-use Opis\JsonSchema\Validator as OpisValidator;
 
 class Validator {
 	public function __construct(
@@ -14,20 +11,20 @@ class Validator {
 
 	public function validate(JsonObject $json):ValidationResult {
 		if($this->schema) {
-			$validator = new OpisValidator(
-				stop_at_first_error: false,
-			);
-			$opisSchema = Helper::toJSON($this->schema);
-			$opisData = is_a($json, JsonPrimitive::class)
+			$validator = new \JsonSchema\Validator();
+			$object = $json instanceof JsonPrimitive
 				? $json->getPrimitiveValue()
-				: Helper::toJSON($json);
-			$validationResult = $validator->validate($opisData, $opisSchema);
+				: $json->asObject();
+			$validator->validate($object, $this->schema->asObject());
 
-			if(!$validationResult->isValid()) {
-				$errorFormatter = new ErrorFormatter();
-				$error = $errorFormatter->formatFlat($validationResult->error());
-				$error = array_filter($error, fn($i) => $i !== "Data must match schema");
-				return new ValidationError(array_values($error));
+			if(!$validator->isValid()) {
+				$errorList = [];
+				foreach($validator->getErrors() as $error) {
+					$errorList[$error["pointer"] ?: "/"] = $error["message"];
+				}
+
+				ksort($errorList);
+				return new ValidationError($errorList);
 			}
 		}
 

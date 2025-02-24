@@ -36,7 +36,7 @@ class ValidatorTest extends TestCase {
 		$result = $sut->validate($jsonTest);
 		self::assertInstanceOf(ValidationError::class, $result);
 		$errorList = $result->getErrorList();
-		self::assertContains("Minimum string length is 5, found 4", $errorList);
+		self::assertContains("Must be at least 5 characters long", $errorList);
 		self::assertCount(1, $errorList);
 	}
 
@@ -76,6 +76,28 @@ class ValidatorTest extends TestCase {
 		$result = $sut->validate($jsonTest);
 		self::assertInstanceOf(ValidationError::class, $result);
 
-		// TODO: How should the error object present the multiple errors, referencing the fields that are at fault?
+		$errorList = $result->getErrorList();
+		self::assertCount(5, $errorList);
+
+		$errorIndex = 0;
+		foreach($errorList as $errorKey => $errorMessage) {
+			$expectedKey = match($errorIndex) {
+				0 => "/",
+				1 => "/colour",
+				2 => "/food/3",
+				3 => "/food/4",
+				4 => "/name",
+			};
+			$expectedValue = match($errorIndex) {
+				0 => "The property toy is not defined and the definition does not allow additional properties",
+				1 => "Integer value found, but a string is required",
+				2 => "Boolean value found, but a string is required",
+				3 => "Integer value found, but a string is required",
+				4 => "Must be at least 1 characters long",
+			};
+			self::assertSame($expectedKey, $errorKey);
+			self::assertSame($expectedValue, $errorMessage);
+			$errorIndex++;
+		}
 	}
 }
