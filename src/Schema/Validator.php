@@ -1,12 +1,13 @@
 <?php
 namespace Gt\Json\Schema;
 
+use Gt\Json\JsonKvpObject;
 use Gt\Json\JsonObject;
 use Gt\Json\JsonPrimitive\JsonPrimitive;
 
 class Validator {
 	public function __construct(
-		private ?JsonObject $schema = null,
+		private ?JsonKvpObject $schema = null,
 	) {}
 
 	public function validate(JsonObject $json):ValidationResult {
@@ -24,7 +25,7 @@ class Validator {
 				}
 
 				ksort($errorList);
-				return new ValidationError($errorList);
+				return new ValidationError($this->schema, $errorList);
 			}
 		}
 
