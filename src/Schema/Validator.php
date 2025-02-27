@@ -4,6 +4,7 @@ namespace Gt\Json\Schema;
 use Gt\Json\JsonKvpObject;
 use Gt\Json\JsonObject;
 use Gt\Json\JsonPrimitive\JsonPrimitive;
+use JsonSchema\Validator as JsonSchemaValidator;
 
 class Validator {
 	public function __construct(
@@ -12,7 +13,7 @@ class Validator {
 
 	public function validate(JsonObject $json):ValidationResult {
 		if($this->schema) {
-			$validator = new \JsonSchema\Validator();
+			$validator = new JsonSchemaValidator();
 			$object = $json instanceof JsonPrimitive
 				? $json->getPrimitiveValue()
 				: $json->asObject();
