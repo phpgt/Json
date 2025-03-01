@@ -10,7 +10,7 @@ use JsonSerializable;
 class ValidationError extends ValidationResult implements JsonSerializable {
 	/** @param array<string> $errorList */
 	public function __construct(
-		private JsonKvpObject $schema,
+		private JsonObject $schema,
 		private array $errorList,
 	) {}
 

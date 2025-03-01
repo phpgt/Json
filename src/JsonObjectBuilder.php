@@ -98,7 +98,7 @@ class JsonObjectBuilder extends DataObjectBuilder {
 			throw new FileNotFoundException($filePath);
 		}
 
-		return self::fromJsonString(file_get_contents($filePath));
+		return self::fromJsonString(file_get_contents($filePath) ?: "");
 	}
 
 }
