@@ -1,6 +1,7 @@
 <?php
 namespace Gt\Json\Test;
 
+use Gt\Json\FileNotFoundException;
 use Gt\Json\JsonDecodeException;
 use Gt\Json\JsonKvpObject;
 use Gt\Json\JsonObjectBuilder;
@@ -236,5 +237,23 @@ class JsonObjectBuilderTest extends TestCase {
 		$json = $sut->fromJsonString($jsonString);
 		self::assertSame([1, 2, 3], $json->getArray("key1", "int"));
 		self::assertSame([], $json->getArray("key2", "int"));
+	}
+
+	public function testFromFile_doesNotExist():void {
+		$sut = new JsonObjectBuilder();
+
+		self::expectException(FileNotFoundException::class);
+		$sut->fromFile("/does/not/exist");
+	}
+
+	public function testFromFile():void {
+		$filePath = tempnam(sys_get_temp_dir(), "phpgt-json-test-");
+		$jsonString = '{"org":"PHP.Gt","repo":"json"}';
+		file_put_contents($filePath, $jsonString);
+
+		$sut = new JsonObjectBuilder();
+		$json = $sut->fromFile($filePath);
+		self::assertSame((string)$json, $jsonString);
+		unlink($filePath);
 	}
 }
