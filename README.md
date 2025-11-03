@@ -69,3 +69,9 @@ Check out the [PHP implementation of the Fetch API][fetch] that uses this librar
 
 [dataobject]: https://www.php.gt/dataobject
 [fetch]: https://www.php.gt/fetch
+
+# Proudly sponsored by
+
+[JetBrains Open Source sponsorship program](https://www.jetbrains.com/community/opensource/)
+
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://www.jetbrains.com/community/opensource/)
