@@ -70,20 +70,13 @@ class JsonObjectBuilder extends DataObjectBuilder {
 		elseif(is_array($jsonDecoded)) {
 			array_walk_recursive($jsonDecoded, function(&$element) {
 				if($element instanceof StdClass) {
-					$element = $this->fromObject(
-						$element,
-						JsonKvpObject::class
-					);
+					$element = $this->asJsonKvpObject($element);
 				}
 			});
 			$jsonData = new JsonArrayPrimitive();
 		}
 		else {
-			/** @var JsonKvpObject $jsonData */
-			$jsonData = $this->fromObject(
-				$jsonDecoded,
-				JsonKvpObject::class
-			);
+			$jsonData = $this->asJsonKvpObject($jsonDecoded);
 		}
 
 		if($jsonData instanceof JsonPrimitive) {
@@ -91,5 +84,22 @@ class JsonObjectBuilder extends DataObjectBuilder {
 		}
 
 		return $jsonData;
+	}
+
+	/** @param array<string, mixed> $input */
+	public function fromAssociativeArray(array $input):JsonObject {
+		return $this->fromJsonString(json_encode($input));
+	}
+
+	public function asJsonKvpObject(
+		object $input,
+	):JsonKvpObject {
+		$kvp = new JsonKvpObject();
+
+		foreach(get_object_vars($input) as $key => $value) {
+			$kvp = $kvp->with($key, $value);
+		}
+
+		return $kvp;
 	}
 }
