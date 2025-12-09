@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 
 class JsonDocumentTest extends TestCase {
 	public function testToString_empty():void {
+// An empty response should be zero bytes, because `null` is still a datum that
+// represents some kind of response. If there is no data, `null` is not
+// accurate.
 		$sut = new JsonDocument();
 		self::assertSame("", (string)$sut);
 	}

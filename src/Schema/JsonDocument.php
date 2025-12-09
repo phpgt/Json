@@ -22,7 +22,30 @@ class JsonDocument {
 		$this->jsonObject = $jsonObject;
 	}
 
+	/**
+	 * Set a value in the document using dot notation for nested objects.
+	 *
+	 * @param string $key The key to set, can use dot notation for nested objects
+	 * @param mixed $value The value to set
+	 * @throws JsonTypeException If the document object is not a JsonKvpObject
+	 */
 	public function set(string $key, mixed $value):void {
+		$this->ensureJsonKvpObject();
+
+		if(!str_contains($key, ".")) {
+			$this->setSimpleKey($key, $value);
+			return;
+		}
+
+		$this->setNestedKey($key, $value);
+	}
+
+	/**
+	 * Ensure that the document object is a JsonKvpObject.
+	 *
+	 * @throws JsonTypeException If the document object is not a JsonKvpObject
+	 */
+	private function ensureJsonKvpObject():void {
 		if(!$this->jsonObject) {
 			$this->jsonObject = new JsonKvpObject();
 		}
@@ -30,78 +53,117 @@ class JsonDocument {
 		if(!$this->jsonObject instanceof JsonKvpObject) {
 			throw new JsonTypeException("Internal document object is already set as not a " . JsonKvpObject::class);
 		}
+	}
 
-		if(str_contains($key, ".")) {
-			$keyParts = explode(".", $key);
+	/**
+	 * Set a simple key-value pair in the document.
+	 *
+	 * @param string $key The key to set
+	 * @param mixed $value The value to set
+	 */
+	private function setSimpleKey(string $key, mixed $value):void {
+		if($this->jsonObject) {
+			$this->jsonObject = $this->jsonObject->with($key, $value);
+		}
+	}
 
-			// For simple two-part keys like "department.name"
-			if(count($keyParts) === 2) {
-				$parentKey = $keyParts[0];
-				$childKey = $keyParts[1];
-
-				// Get or create the parent object
-				$parentObject = $this->jsonObject->contains($parentKey) && 
-					$this->jsonObject->get($parentKey) instanceof JsonKvpObject
-					? $this->jsonObject->get($parentKey)
-					: new JsonKvpObject();
-
-				// Set the child value
-				$parentObject = $parentObject->with($childKey, $value);
-
-				// Update the root object
-				$this->jsonObject = $this->jsonObject->with($parentKey, $parentObject);
-				return;
-			}
-
-			// For more complex nested keys
-			$currentKey = array_shift($keyParts);
-			$remainingKey = implode(".", $keyParts);
-
-			// Get or create the current level object
-			$currentObject = $this->jsonObject->contains($currentKey) && 
-				$this->jsonObject->get($currentKey) instanceof JsonKvpObject
-				? $this->jsonObject->get($currentKey)
-				: new JsonKvpObject();
-
-			// Create a temporary document to handle the remaining key parts
-			$tempDoc = new JsonDocument($currentObject);
-			$tempDoc->set($remainingKey, $value);
-
-			// Update the root object
-			$this->jsonObject = $this->jsonObject->with($currentKey, $tempDoc->jsonObject);
+	/**
+	 * Set a multi-part key in the document.
+	 *
+	 * @param array<int, string> $keyParts The key parts
+	 * @param mixed $value The value to set
+	 */
+	private function setNestedKey(string $key, mixed $value):void {
+		$keyParts = explode(".", $key);
+		if(!$this->jsonObject) {
 			return;
 		}
 
-		$this->jsonObject = $this->jsonObject->with($key, $value);
+		$currentKey = array_shift($keyParts);
+		if($currentKey === null) {
+			return;
+		}
+
+		$remainingKey = implode(".", $keyParts);
+
+		// Get or create the current level object
+		$currentObject = $this->jsonObject->contains($currentKey) &&
+		$this->jsonObject->get($currentKey) instanceof JsonKvpObject
+			? $this->jsonObject->get($currentKey)
+			: new JsonKvpObject();
+
+		// Create a temporary document to handle the remaining key parts
+		$tempDoc = new JsonDocument($currentObject);
+		$tempDoc->set($remainingKey, $value);
+
+		// Update the root object
+		$this->jsonObject = $this->jsonObject->with($currentKey, $tempDoc->jsonObject);
 	}
 
+	/**
+	 * Get a value from the document using dot notation for nested objects.
+	 *
+	 * @param string $key The key to get, can use dot notation for nested objects
+	 * @return null|bool|int|float|string|JsonObject|JsonDocument The value at the specified key
+	 */
 	public function get(string $key):null|bool|int|float|string|JsonObject|JsonDocument {
 		if(!isset($this->jsonObject)) {
 			return null;
 		}
 
 		if(!str_contains($key, ".")) {
-			// Simple key, just get it directly
-			$value = $this->jsonObject->get($key);
+			return $this->getSimpleKey($key);
+		}
 
-			// For the test case where we need to return the raw value
-			if($value instanceof JsonObject) {
-				// Wrap JsonObject in a JsonDocument to support nested dot notation
-				return new JsonDocument($value);
-			}
+		return $this->getNestedKey($key);
+	}
 
-			return $this->formatReturnValue($value);
+	/**
+	 * Get a value from a simple key in the document.
+	 *
+	 * @param string $key The key to get
+	 * @return null|bool|int|float|string|JsonObject|JsonDocument The value at the specified key
+	 */
+	private function getSimpleKey(string $key):null|bool|int|float|string|JsonObject|JsonDocument {
+		if(!$this->jsonObject) {
+			return null;
+		}
+
+		$value = $this->jsonObject->get($key);
+
+		if($value instanceof JsonObject) {
+			// Wrap JsonObject in a JsonDocument to support nested dot notation
+			return new JsonDocument($value);
+		}
+
+		return $this->formatReturnValue($value);
+	}
+
+	/**
+	 * Get a value from a nested key in the document using dot notation.
+	 *
+	 * @param string $key The key to get, using dot notation
+	 * @return null|bool|int|float|string|JsonObject The value at the specified key
+	 */
+	private function getNestedKey(string $key):null|bool|int|float|string|JsonObject {
+		if(!$this->jsonObject) {
+			return null;
 		}
 
 		$keyParts = explode(".", $key);
-		$currentObject = $this->jsonObject;
+		return $this->traverseKeyParts($keyParts, $this->jsonObject);
+	}
 
+	/**
+	 * Traverse the key parts to find the value at the specified path.
+	 *
+	 * @param array<int, string> $keyParts The key parts to traverse
+	 * @param JsonObject $currentObject The current object being traversed
+	 * @return null|bool|int|float|string|JsonObject The value at the specified path
+	 */
+	private function traverseKeyParts(array $keyParts, JsonObject $currentObject):null|bool|int|float|string|JsonObject {
 		foreach($keyParts as $i => $part) {
-			if(!$currentObject instanceof JsonKvpObject) {
-				return null;
-			}
-
-			if(!$currentObject->contains($part)) {
+			if(!$currentObject instanceof JsonKvpObject || !$currentObject->contains($part)) {
 				return null;
 			}
 
@@ -118,17 +180,25 @@ class JsonDocument {
 		return null;
 	}
 
+	/**
+	 * Format the return value to ensure it matches the expected return type.
+	 *
+	 * @param mixed $value The value to format
+	 * @return null|bool|int|float|string|JsonObject The formatted value
+	 */
 	private function formatReturnValue(mixed $value):null|bool|int|float|string|JsonObject {
 		if(is_null($value)) {
 			return null;
 		}
-		elseif(is_scalar($value)) {
-			return $value;
-		}
-		elseif(is_array($value)) {
+
+		if(is_scalar($value)) {
 			return $value;
 		}
 
-		return $value;
+		if($value instanceof JsonObject) {
+			return $value;
+		}
+
+		return null;
 	}
 }
