@@ -35,62 +35,115 @@ class JsonObjectBuilder extends DataObjectBuilder {
 			throw new JsonDecodeException($exception->getMessage());
 		}
 
+		// Ensure $json is of the expected type
+		if(!is_object($json) && !is_array($json) && !is_scalar($json) && $json !== null) {
+			throw new JsonDecodeException("Invalid JSON structure");
+		}
+
 		return $this->fromJsonDecoded($json);
 	}
 
 	/**
-	 * @param object|array<int, mixed>|string|int|float|bool|null $jsonDecoded
+	 * Create a JsonObject from a decoded JSON value.
+	 * 
+	 * @param object|array<int|string, mixed>|string|int|float|bool|null $jsonDecoded The decoded JSON value
+	 * @return JsonObject The resulting JsonObject
 	 */
 	public function fromJsonDecoded(
 		object|array|string|int|float|bool|null $jsonDecoded
 	):JsonObject {
-		if(is_array($jsonDecoded)
-		&& !is_int(key($jsonDecoded))) {
-// The JSON could represent a primitive indexed array, but the json could have
-// been decoded as an associative array too. Deal with associative arrays first.
-			$jsonData = $this->fromJsonDecoded(
-				(object)$jsonDecoded
-			);
-		}
-		elseif(is_null($jsonDecoded)) {
-			$jsonData = new JsonNullPrimitive();
-		}
-		elseif(is_bool($jsonDecoded)) {
-			$jsonData = new JsonBoolPrimitive();
-		}
-		elseif(is_int($jsonDecoded)) {
-			$jsonData = new JsonIntPrimitive();
-		}
-		elseif(is_float($jsonDecoded)) {
-			$jsonData = new JsonFloatPrimitive();
-		}
-		elseif(is_string($jsonDecoded)) {
-			$jsonData = new JsonStringPrimitive();
-		}
-		elseif(is_array($jsonDecoded)) {
-			array_walk_recursive($jsonDecoded, function(&$element) {
-				if($element instanceof StdClass) {
-					$element = $this->fromObject(
-						$element,
-						JsonKvpObject::class
-					);
-				}
-			});
-			$jsonData = new JsonArrayPrimitive();
-		}
-		else {
-			/** @var JsonKvpObject $jsonData */
-			$jsonData = $this->fromObject(
-				$jsonDecoded,
-				JsonKvpObject::class
-			);
+		// Handle associative arrays by converting to objects
+		if(is_array($jsonDecoded) && !is_int(key($jsonDecoded))) {
+			return $this->fromJsonDecoded((object)$jsonDecoded);
 		}
 
+		// Handle indexed arrays separately
+		if(is_array($jsonDecoded)) {
+			return $this->processArrayData($jsonDecoded);
+		}
+
+		// Handle scalar and object types
+		$jsonData = match(true) {
+			is_null($jsonDecoded) => new JsonNullPrimitive(),
+			is_bool($jsonDecoded) => new JsonBoolPrimitive(),
+			is_int($jsonDecoded) => new JsonIntPrimitive(),
+			is_float($jsonDecoded) => new JsonFloatPrimitive(),
+			is_string($jsonDecoded) => new JsonStringPrimitive(),
+			default => $this->asJsonKvpObject($jsonDecoded),
+		};
+
+		// Set primitive value if applicable
 		if($jsonData instanceof JsonPrimitive) {
 			$jsonData = $jsonData->withPrimitiveValue($jsonDecoded);
 		}
 
 		return $jsonData;
+	}
+
+	/**
+	 * Process array data and convert it to a JsonArrayPrimitive.
+	 * 
+	 * @param array<int|string, mixed> $arrayData The array data to process
+	 * @return JsonArrayPrimitive The resulting JsonArrayPrimitive
+	 */
+	private function processArrayData(array $arrayData): JsonArrayPrimitive {
+		$processedArray = [];
+
+		foreach($arrayData as $key => $value) {
+			$processedArray[$key] = $this->processArrayElement($value);
+		}
+
+		$jsonData = new JsonArrayPrimitive();
+		return $jsonData->withPrimitiveValue($processedArray);
+	}
+
+	/**
+	 * Process an individual element from an array.
+	 * 
+	 * @param mixed $element The element to process
+	 * @return mixed The processed element
+	 */
+	private function processArrayElement(mixed $element): mixed {
+		if($element instanceof stdClass) {
+			return $this->asJsonKvpObject($element);
+		}
+
+		if(is_array($element)) {
+			$nestedArray = [];
+			foreach($element as $nestedKey => $nestedValue) {
+				$nestedArray[$nestedKey] = $this->processArrayElement($nestedValue);
+			}
+			return $nestedArray;
+		}
+
+		return $element;
+	}
+
+	/**
+	 * Create a JsonObject from an associative array.
+	 * 
+	 * @param array<string, mixed> $input The associative array to convert
+	 * @return JsonObject The resulting JsonObject
+	 * @throws JsonDecodeException If the JSON encoding fails
+	 */
+	public function fromAssociativeArray(array $input):JsonObject {
+		$jsonString = json_encode($input);
+		if($jsonString === false) {
+			throw new JsonDecodeException("Failed to encode array to JSON");
+		}
+		return $this->fromJsonString($jsonString);
+	}
+
+	public function asJsonKvpObject(
+		object $input,
+	):JsonKvpObject {
+		$kvp = new JsonKvpObject();
+
+		foreach(get_object_vars($input) as $key => $value) {
+			$kvp = $kvp->with($key, $value);
+		}
+
+		return $kvp;
 	}
 
 	public function fromFile(string $filePath):JsonObject {
@@ -100,5 +153,4 @@ class JsonObjectBuilder extends DataObjectBuilder {
 
 		return self::fromJsonString(file_get_contents($filePath) ?: "");
 	}
-
 }

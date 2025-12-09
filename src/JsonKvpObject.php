@@ -22,6 +22,6 @@ class JsonKvpObject extends JsonObject implements Iterator {
 	}
 
 	public function valid():bool {
-		return isset($this->data[$this->key()]);
+		return isset($this->data[$this->key() ?? ""]);
 	}
 }
