@@ -145,4 +145,12 @@ class JsonObjectBuilder extends DataObjectBuilder {
 
 		return $kvp;
 	}
+
+	public function fromFile(string $filePath):JsonObject {
+		if(!is_file($filePath)) {
+			throw new FileNotFoundException($filePath);
+		}
+
+		return self::fromJsonString(file_get_contents($filePath) ?: "");
+	}
 }
