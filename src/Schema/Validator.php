@@ -8,7 +8,7 @@ use JsonSchema\Validator as JsonSchemaValidator;
 
 class Validator {
 	public function __construct(
-		private ?JsonKvpObject $schema = null,
+		private ?JsonObject $schema = null,
 	) {}
 
 	public function validate(JsonObject $json):ValidationResult {
