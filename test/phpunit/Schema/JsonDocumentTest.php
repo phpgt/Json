@@ -98,6 +98,7 @@ class JsonDocumentTest extends TestCase {
 	public function testError(): void {
 		$sut = new JsonDocument();
 		$sut->error("This is an error");
+
 		self::assertSame(json_encode(["error" => "This is an error"]), (string)$sut);
 	}
 
@@ -105,6 +106,7 @@ class JsonDocumentTest extends TestCase {
 		$sut = new JsonDocument();
 		$sut->set("one", "example");
 		$sut->error("This is an error");
+
 		self::assertSame(json_encode(["error" => "This is an error"]), (string)$sut);
 	}
 
@@ -115,7 +117,9 @@ class JsonDocumentTest extends TestCase {
 			"two" => "example",
 			"three" => "example",
 		];
+
 		$sut->error("This is an error", context: $context);
+
 		self::assertSame(json_encode([
 			"error" => "This is an error",
 			"errorContext" => $context,
@@ -129,7 +133,9 @@ class JsonDocumentTest extends TestCase {
 			"two" => "example",
 			"three" => "example",
 		];
+
 		$sut->error("This is an error", context: $context, contextProperty: "data");
+
 		self::assertSame(json_encode([
 			"error" => "This is an error",
 			"data" => $context,
@@ -151,10 +157,10 @@ class JsonDocumentTest extends TestCase {
 
 	public function testError_disallowsSetAfterError():void {
 		$sut = new JsonDocument();
-		$sut->error("This is an error");
 
 		self::expectException(JsonErrorStateException::class);
 
+		$sut->error("This is an error");
 		$sut->set("one", "example");
 	}
 }

@@ -2,11 +2,14 @@
 namespace Gt\Json\Schema;
 
 use Gt\Json\JsonErrorCustomPropertyNameException;
+use Gt\Json\JsonErrorStateException;
 use Gt\Json\JsonKvpObject;
 use Gt\Json\JsonObject;
 use Gt\Json\JsonTypeException;
 
 class JsonDocument {
+	private bool $hasError = false;
+
 	public function __construct(
 		private ?JsonObject $jsonObject = null,
 	) {}
@@ -31,6 +34,10 @@ class JsonDocument {
 	 * @throws JsonTypeException If the document object is not a JsonKvpObject
 	 */
 	public function set(string $key, mixed $value):void {
+		if ($this->hasError) {
+			throw new JsonErrorStateException();
+		}
+
 		$this->ensureJsonKvpObject();
 
 		if(!str_contains($key, ".")) {
@@ -41,6 +48,17 @@ class JsonDocument {
 		$this->setNestedKey($key, $value);
 	}
 
+	/**
+	 * Clear all set properties and set an error state. No additional JSON
+	 * properties may be set once an error is set.
+	 *
+	 * @param string $message The message to be set
+	 * @param array|null $context An optional array containing error context to be returned
+	 * @param string $property Optional property name for the error message
+	 * @param string $contextProperty Optional property name for the error context array
+	 *
+	 * @throws JsonErrorCustomPropertyNameException If clashing property names are provided
+	 */
 	public function error(
 		string $message,
 		?array $context = null,
@@ -57,6 +75,8 @@ class JsonDocument {
 
 			$this->set($contextProperty, $context);
 		}
+
+		$this->hasError = true;
 	}
 
 	/**
