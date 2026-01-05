@@ -1,11 +1,15 @@
 <?php
 namespace Gt\Json\Schema;
 
+use Gt\Json\JsonErrorCustomPropertyNameException;
+use Gt\Json\JsonErrorStateException;
 use Gt\Json\JsonKvpObject;
 use Gt\Json\JsonObject;
 use Gt\Json\JsonTypeException;
 
 class JsonDocument {
+	private bool $hasError = false;
+
 	public function __construct(
 		private ?JsonObject $jsonObject = null,
 	) {}
@@ -30,6 +34,10 @@ class JsonDocument {
 	 * @throws JsonTypeException If the document object is not a JsonKvpObject
 	 */
 	public function set(string $key, mixed $value):void {
+		if ($this->hasError) {
+			throw new JsonErrorStateException();
+		}
+
 		$this->ensureJsonKvpObject();
 
 		if(!str_contains($key, ".")) {
@@ -38,6 +46,37 @@ class JsonDocument {
 		}
 
 		$this->setNestedKey($key, $value);
+	}
+
+	/**
+	 * Clear all set properties and set an error state. No additional JSON
+	 * properties may be set once an error is set.
+	 *
+	 * @param string $message The message to be set
+	 * @param null|array<string, mixed> $context An optional array containing error context to be returned
+	 * @param string $property Optional property name for the error message
+	 * @param string $contextProperty Optional property name for the error context array
+	 *
+	 * @throws JsonErrorCustomPropertyNameException If clashing property names are provided
+	 */
+	public function error(
+		string $message,
+		?array $context = null,
+		string $property = "error",
+		string $contextProperty = "errorContext"
+	):void {
+		$this->jsonObject = null;
+		$this->set($property, $message);
+
+		if ($context) {
+			if ($property === $contextProperty) {
+				throw new JsonErrorCustomPropertyNameException();
+			}
+
+			$this->set($contextProperty, $context);
+		}
+
+		$this->hasError = true;
 	}
 
 	/**
@@ -55,32 +94,21 @@ class JsonDocument {
 		}
 	}
 
-	/**
-	 * Set a simple key-value pair in the document.
-	 *
-	 * @param string $key The key to set
-	 * @param mixed $value The value to set
-	 */
 	private function setSimpleKey(string $key, mixed $value):void {
 		if($this->jsonObject) {
 			$this->jsonObject = $this->jsonObject->with($key, $value);
 		}
 	}
 
-	/**
-	 * Set a multi-part key in the document.
-	 *
-	 * @param array<int, string> $keyParts The key parts
-	 * @param mixed $value The value to set
-	 */
 	private function setNestedKey(string $key, mixed $value):void {
 		$keyParts = explode(".", $key);
 		if(!$this->jsonObject) {
 			return;
 		}
 
+		/** @var null|string $currentKey */
 		$currentKey = array_shift($keyParts);
-		if($currentKey === null) {
+		if(!$currentKey) {
 			return;
 		}
 
