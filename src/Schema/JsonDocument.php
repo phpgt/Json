@@ -1,6 +1,7 @@
 <?php
 namespace Gt\Json\Schema;
 
+use Gt\Json\JsonErrorCustomPropertyNameException;
 use Gt\Json\JsonKvpObject;
 use Gt\Json\JsonObject;
 use Gt\Json\JsonTypeException;
@@ -47,8 +48,15 @@ class JsonDocument {
 		string $contextProperty = "errorContext"
 	):void {
 		$this->jsonObject = null;
-
 		$this->set($property, $message);
+
+		if ($context) {
+			if ($property === $contextProperty) {
+				throw new JsonErrorCustomPropertyNameException();
+			}
+
+			$this->set($contextProperty, $context);
+		}
 	}
 
 	/**

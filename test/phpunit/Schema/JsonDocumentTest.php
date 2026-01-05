@@ -143,14 +143,18 @@ class JsonDocumentTest extends TestCase {
 			"two" => "example",
 			"three" => "example",
 		];
-		$sut->error("This is an error", context: $context, property: "data", contextProperty: "data");
+
 		self::expectException(JsonErrorCustomPropertyNameException::class);
+
+		$sut->error("This is an error", context: $context, property: "data", contextProperty: "data");
 	}
 
 	public function testError_disallowsSetAfterError():void {
 		$sut = new JsonDocument();
 		$sut->error("This is an error");
-		$sut->set("one", "example");
+
 		self::expectException(JsonErrorStateException::class);
+
+		$sut->set("one", "example");
 	}
 }
