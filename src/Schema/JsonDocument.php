@@ -40,6 +40,17 @@ class JsonDocument {
 		$this->setNestedKey($key, $value);
 	}
 
+	public function error(
+		string $message,
+		?array $context = null,
+		string $property = "error",
+		string $contextProperty = "errorContext"
+	):void {
+		$this->jsonObject = null;
+
+		$this->set($property, $message);
+	}
+
 	/**
 	 * Ensure that the document object is a JsonKvpObject.
 	 *
