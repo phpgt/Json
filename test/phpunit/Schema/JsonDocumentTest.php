@@ -1,6 +1,8 @@
 <?php
 namespace Gt\Json\Test\Schema;
 
+use Gt\Json\JsonErrorCustomPropertyNameException;
+use Gt\Json\JsonErrorStateException;
 use Gt\Json\JsonObjectBuilder;
 use Gt\Json\JsonPrimitive\JsonArrayPrimitive;
 use Gt\Json\JsonPrimitive\JsonStringPrimitive;
@@ -91,5 +93,64 @@ class JsonDocumentTest extends TestCase {
 		$jsonObject = $builder->fromJsonDecoded($exampleArray);
 		$sut = new JsonDocument($jsonObject);
 		self::assertSame(json_encode($exampleArray), (string)$sut);
+	}
+
+	public function testError(): void {
+		$sut = new JsonDocument();
+		$sut->error("This is an error");
+		self::assertSame(json_encode(["error" => "This is an error"]), (string)$sut);
+	}
+
+	public function testError_overridesCurrentProperties():void {
+		$sut = new JsonDocument();
+		$sut->set("one", "example");
+		$sut->error("This is an error");
+		self::assertSame(json_encode(["error" => "This is an error"]), (string)$sut);
+	}
+
+	public function testError_context():void {
+		$sut = new JsonDocument();
+		$context = [
+			"one" => "example",
+			"two" => "example",
+			"three" => "example",
+		];
+		$sut->error("This is an error", context: $context);
+		self::assertSame(json_encode([
+			"error" => "This is an error",
+			"errorContext" => $context,
+		]), (string)$sut);
+	}
+
+	public function testError_contextCustomPropertyName(): void {
+		$sut = new JsonDocument();
+		$context = [
+			"one" => "example",
+			"two" => "example",
+			"three" => "example",
+		];
+		$sut->error("This is an error", context: $context, contextProperty: "data");
+		self::assertSame(json_encode([
+			"error" => "This is an error",
+			"data" => $context,
+		]), (string)$sut);
+	}
+
+	public function testError_customPropertyNamesMustBeDifferent(): void {
+		$sut = new JsonDocument();
+		$context = [
+			"one" => "example",
+			"two" => "example",
+			"three" => "example",
+		];
+		$sut->error("This is an error", context: $context, property: "data", contextProperty: "data");
+		self::expectException(JsonErrorCustomPropertyNameException::class);
+	}
+
+	public function testError_disallowsSetAfterError():void {
+		$sut = new JsonDocument();
+		$sut->error("This is an error");
+		$sut->set("one", "example");
+		self::expectException(JsonErrorStateException::class);
 	}
 }
