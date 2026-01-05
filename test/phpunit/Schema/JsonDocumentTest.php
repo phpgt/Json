@@ -65,7 +65,7 @@ class JsonDocumentTest extends TestCase {
 		self::assertSame("Computer Science", $sut->get("department.name"));
 	}
 
-	public function testSet_nesedGet():void {
+	public function testSet_nestedGet():void {
 		$sut = new JsonDocument();
 		$sut->set("department.name", "Computer Science");
 		$department = $sut->get("department");
