@@ -53,7 +53,7 @@ class JsonDocument {
 	 * properties may be set once an error is set.
 	 *
 	 * @param string $message The message to be set
-	 * @param array|null $context An optional array containing error context to be returned
+	 * @param null|array<string, mixed> $context An optional array containing error context to be returned
 	 * @param string $property Optional property name for the error message
 	 * @param string $contextProperty Optional property name for the error context array
 	 *
@@ -94,32 +94,21 @@ class JsonDocument {
 		}
 	}
 
-	/**
-	 * Set a simple key-value pair in the document.
-	 *
-	 * @param string $key The key to set
-	 * @param mixed $value The value to set
-	 */
 	private function setSimpleKey(string $key, mixed $value):void {
 		if($this->jsonObject) {
 			$this->jsonObject = $this->jsonObject->with($key, $value);
 		}
 	}
 
-	/**
-	 * Set a multi-part key in the document.
-	 *
-	 * @param array<int, string> $keyParts The key parts
-	 * @param mixed $value The value to set
-	 */
 	private function setNestedKey(string $key, mixed $value):void {
 		$keyParts = explode(".", $key);
 		if(!$this->jsonObject) {
 			return;
 		}
 
+		/** @var null|string $currentKey */
 		$currentKey = array_shift($keyParts);
-		if($currentKey === null) {
+		if(!$currentKey) {
 			return;
 		}
 
