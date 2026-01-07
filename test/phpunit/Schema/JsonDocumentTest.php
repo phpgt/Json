@@ -163,4 +163,33 @@ class JsonDocumentTest extends TestCase {
 		$sut->error("This is an error");
 		$sut->set("one", "example");
 	}
+
+	public function testSetErrorCallback():void {
+		$calls = [];
+		$callback = function(string $message, ?array $context = null)use(&$calls):void {
+			array_push($calls, [$message, $context]);
+		};
+
+		$sut = new JsonDocument();
+		$sut->setErrorCallback($callback);
+
+		$sut->error("Test");
+		self::assertCount(1, $calls);
+		self::assertSame("Test", $calls[0][0]);
+		self::assertNull($calls[0][1]);
+	}
+
+	public function testSetErrorCallback_context():void {
+		$calls = [];
+		$callback = function(string $message, ?array $context = null)use(&$calls):void {
+			array_push($calls, [$message, $context]);
+		};
+
+		$sut = new JsonDocument();
+		$sut->setErrorCallback($callback);
+
+		$sut->error("Test", ["example" => "message"]);
+		self::assertCount(1, $calls);
+		self::assertSame(["example" => "message"], $calls[0][1]);
+	}
 }
