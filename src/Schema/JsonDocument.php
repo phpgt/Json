@@ -9,6 +9,8 @@ use Gt\Json\JsonTypeException;
 
 class JsonDocument {
 	private bool $hasError = false;
+	/** @var callable */
+	private $errorCallback;
 
 	public function __construct(
 		private ?JsonObject $jsonObject = null,
@@ -77,6 +79,13 @@ class JsonDocument {
 		}
 
 		$this->hasError = true;
+		if(isset($this->errorCallback)) {
+			call_user_func($this->errorCallback, $message, $context);
+		}
+	}
+
+	public function setErrorCallback(callable $callback):void {
+		$this->errorCallback = $callback;
 	}
 
 	/**
