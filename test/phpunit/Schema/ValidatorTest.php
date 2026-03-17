@@ -1,37 +1,37 @@
 <?php
-namespace Gt\Json\Test\Schema;
+namespace GT\Json\Test\Schema;
 
-use Gt\Json\JsonObjectBuilder;
-use Gt\Json\JsonPrimitive\JsonStringPrimitive;
-use Gt\Json\Schema\ValidationError;
-use Gt\Json\Schema\ValidationSuccess;
-use Gt\Json\Schema\Validator;
+use GT\Json\JSONObjectBuilder;
+use GT\Json\JSONPrimitive\JSONStringPrimitive;
+use GT\Json\Schema\ValidationError;
+use GT\Json\Schema\ValidationSuccess;
+use GT\Json\Schema\Validator;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 
 class ValidatorTest extends TestCase {
 	public function testValidate_noRules():void {
 		$sut = new Validator();
-		$jsonTest = (new JsonStringPrimitive())->withPrimitiveValue("test");
+		$jsonTest = (new JSONStringPrimitive())->withPrimitiveValue("test");
 		$result = $sut->validate($jsonTest);
 		self::assertInstanceOf(ValidationSuccess::class, $result);
 	}
 
 	public function testValidate_simple():void {
-		$builder = new JsonObjectBuilder();
+		$builder = new JSONObjectBuilder();
 		$jsonSchema = $builder->fromJsonString(file_get_contents(__DIR__ . "/ExampleSchema/01-simple-min-length.json"));
 		$sut = new Validator($jsonSchema);
-		$jsonTest = (new JsonStringPrimitive())->withPrimitiveValue("test123");
+		$jsonTest = (new JSONStringPrimitive())->withPrimitiveValue("test123");
 
 		$result = $sut->validate($jsonTest);
 		self::assertInstanceOf(ValidationSuccess::class, $result);
 	}
 
 	public function testValidate_simpleFail():void {
-		$builder = new JsonObjectBuilder();
+		$builder = new JSONObjectBuilder();
 		$jsonSchema = $builder->fromJsonString(file_get_contents(__DIR__ . "/ExampleSchema/01-simple-min-length.json"));
 		$sut = new Validator($jsonSchema);
-		$jsonTest = (new JsonStringPrimitive())->withPrimitiveValue("test"); // this is too short (5 characters min)!
+		$jsonTest = (new JSONStringPrimitive())->withPrimitiveValue("test"); // this is too short (5 characters min)!
 
 		$result = $sut->validate($jsonTest);
 		self::assertInstanceOf(ValidationError::class, $result);
@@ -41,7 +41,7 @@ class ValidatorTest extends TestCase {
 	}
 
 	public function testValidate_object():void {
-		$builder = new JsonObjectBuilder();
+		$builder = new JSONObjectBuilder();
 		$jsonSchema = $builder->fromJsonString(file_get_contents(__DIR__ . "/ExampleSchema/02-object.json"));
 		$sut = new Validator($jsonSchema);
 		$jsonString = <<<JSON
@@ -59,7 +59,7 @@ class ValidatorTest extends TestCase {
 	}
 
 	public function testValidate_objectMultipleErrors():void {
-		$builder = new JsonObjectBuilder();
+		$builder = new JSONObjectBuilder();
 		$jsonSchema = $builder->fromJsonString(file_get_contents(__DIR__ . "/ExampleSchema/02-object.json"));
 		$sut = new Validator($jsonSchema);
 		$jsonString = <<<JSON

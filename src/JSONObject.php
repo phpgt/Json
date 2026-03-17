@@ -1,17 +1,17 @@
 <?php
-namespace Gt\Json;
+namespace GT\Json;
 
 use Gt\DataObject\DataObject;
-use Gt\Json\JsonPrimitive\JsonPrimitive;
+use GT\Json\JSONPrimitive\JSONPrimitive;
 use Stringable;
 
-abstract class JsonObject extends DataObject implements Stringable {
+abstract class JSONObject extends DataObject implements Stringable {
 	public function __toString():string {
 		return json_encode($this, JSON_THROW_ON_ERROR);
 	}
 
 	public function jsonSerialize():mixed {
-		if($this instanceof JsonPrimitive) {
+		if($this instanceof JSONPrimitive) {
 			return $this->getPrimitiveValue();
 		}
 

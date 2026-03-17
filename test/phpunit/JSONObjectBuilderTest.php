@@ -1,19 +1,20 @@
 <?php
-namespace Gt\Json\Test;
+namespace GT\Json\Test;
 
-use Gt\Json\FileNotFoundException;
-use Gt\Json\JsonDecodeException;
-use Gt\Json\JsonKvpObject;
-use Gt\Json\JsonObjectBuilder;
-use Gt\Json\JsonPrimitive\JsonArrayPrimitive;
-use Gt\Json\JsonPrimitive\JsonBoolPrimitive;
-use Gt\Json\JsonPrimitive\JsonFloatPrimitive;
-use Gt\Json\JsonPrimitive\JsonIntPrimitive;
-use Gt\Json\JsonPrimitive\JsonNullPrimitive;
-use Gt\Json\JsonPrimitive\JsonStringPrimitive;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use GT\Json\FileNotFoundException;
+use GT\Json\JSONDecodeException;
+use GT\Json\JSONKvpObject;
+use GT\Json\JSONObjectBuilder;
+use GT\Json\JSONPrimitive\JSONArrayPrimitive;
+use GT\Json\JSONPrimitive\JSONBoolPrimitive;
+use GT\Json\JSONPrimitive\JSONFloatPrimitive;
+use GT\Json\JSONPrimitive\JSONIntPrimitive;
+use GT\Json\JSONPrimitive\JSONNullPrimitive;
+use GT\Json\JSONPrimitive\JSONStringPrimitive;
 use PHPUnit\Framework\TestCase;
 
-class JsonObjectBuilderTest extends TestCase {
+class JSONObjectBuilderTest extends TestCase {
 	private string $jsonStringSimpleKVP = <<<JSON
 		{
 			"id": 123,
@@ -58,87 +59,87 @@ class JsonObjectBuilderTest extends TestCase {
 
 
 	public function testFromJsonString() {
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 		$jsonObject = $sut->fromJsonString($this->jsonStringSimpleKVP);
-		self::assertInstanceOf(JsonKvpObject::class, $jsonObject);
+		self::assertInstanceOf(JSONKvpObject::class, $jsonObject);
 		self::assertSame(123, $jsonObject->getInt("id"));
 		self::assertSame("Example", $jsonObject->getString("name"));
 	}
 
 	public function testFromJsonDecoded() {
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 		$json = json_decode($this->jsonStringSimpleKVP);
 		$jsonObject = $sut->fromJsonDecoded($json);
-		self::assertInstanceOf(JsonKvpObject::class, $jsonObject);
+		self::assertInstanceOf(JSONKvpObject::class, $jsonObject);
 		self::assertSame(123, $jsonObject->getInt("id"));
 		self::assertSame("Example", $jsonObject->getString("name"));
 	}
 
 	public function testFromJsonDecodedAsArray() {
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 		$json = json_decode($this->jsonStringSimpleKVP, true);
 		$jsonObject = $sut->fromJsonDecoded($json);
-		self::assertInstanceOf(JsonKvpObject::class, $jsonObject);
+		self::assertInstanceOf(JSONKvpObject::class, $jsonObject);
 		self::assertSame(123, $jsonObject->getInt("id"));
 		self::assertSame("Example", $jsonObject->getString("name"));
 	}
 
 	public function testFromJsonDecodedNull() {
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 		$json = json_decode($this->jsonStringNull);
-		/** @var JsonNullPrimitive $jsonObject */
+		/** @var JSONNullPrimitive $jsonObject */
 		$jsonObject = $sut->fromJsonDecoded($json);
-		self::assertInstanceOf(JsonNullPrimitive::class, $jsonObject);
+		self::assertInstanceOf(JSONNullPrimitive::class, $jsonObject);
 		self::assertNull($jsonObject->getPrimitiveValue());
 	}
 
 	public function testFromJsonDecodedBool() {
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 		$json = json_decode($this->jsonStringBool);
-		/** @var JsonBoolPrimitive $jsonObject */
+		/** @var JSONBoolPrimitive $jsonObject */
 		$jsonObject = $sut->fromJsonDecoded($json);
-		self::assertInstanceOf(JsonBoolPrimitive::class, $jsonObject);
+		self::assertInstanceOf(JSONBoolPrimitive::class, $jsonObject);
 		self::assertTrue($jsonObject->getPrimitiveValue());
 	}
 
 	public function testFromJsonDecodedInt() {
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 		$json = json_decode($this->jsonStringInt);
-		/** @var JsonIntPrimitive $jsonObject */
+		/** @var JSONIntPrimitive $jsonObject */
 		$jsonObject = $sut->fromJsonDecoded($json);
-		self::assertInstanceOf(JsonIntPrimitive::class, $jsonObject);
+		self::assertInstanceOf(JSONIntPrimitive::class, $jsonObject);
 		self::assertSame(123, $jsonObject->getPrimitiveValue());
 	}
 
 	public function testFromJsonDecodedFloat() {
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 		$json = json_decode($this->jsonStringFloat);
-		/** @var JsonFloatPrimitive $jsonObject */
+		/** @var JSONFloatPrimitive $jsonObject */
 		$jsonObject = $sut->fromJsonDecoded($json);
-		self::assertInstanceOf(JsonFloatPrimitive::class, $jsonObject);
+		self::assertInstanceOf(JSONFloatPrimitive::class, $jsonObject);
 		self::assertSame(123.456, $jsonObject->getPrimitiveValue());
 	}
 
 	public function testFromJsonDecodedString() {
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 		$json = json_decode($this->jsonStringString);
-		/** @var JsonStringPrimitive $jsonObject */
+		/** @var JSONStringPrimitive $jsonObject */
 		$jsonObject = $sut->fromJsonDecoded($json);
-		self::assertInstanceOf(JsonStringPrimitive::class, $jsonObject);
+		self::assertInstanceOf(JSONStringPrimitive::class, $jsonObject);
 		self::assertSame("Example!", $jsonObject->getPrimitiveValue());
 	}
 
 	public function testFromJsonDecodedArray() {
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 		$json = json_decode($this->jsonStringArray);
-		/** @var JsonArrayPrimitive $jsonObject */
+		/** @var JSONArrayPrimitive $jsonObject */
 		$jsonObject = $sut->fromJsonDecoded($json);
-		self::assertInstanceOf(JsonArrayPrimitive::class, $jsonObject);
+		self::assertInstanceOf(JSONArrayPrimitive::class, $jsonObject);
 		self::assertSame(["one", "two", "three"], $jsonObject->getPrimitiveValue());
 	}
 
 	public function testFromJsonStringContainingArray() {
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 		$jsonObject = $sut->fromJsonString($this->jsonStringContainingArray);
 		self::assertSame(123, $jsonObject->getInt("id"));
 		self::assertSame("Example", $jsonObject->getString("name"));
@@ -151,7 +152,7 @@ class JsonObjectBuilderTest extends TestCase {
 	}
 
 	public function testFromJsonDecodedContainingArrayWhenDecodedAsArray() {
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 		$json = json_decode($this->jsonStringContainingArray, true);
 		$jsonObject = $sut->fromJsonDecoded($json);
 		self::assertSame(123, $jsonObject->getInt("id"));
@@ -165,32 +166,32 @@ class JsonObjectBuilderTest extends TestCase {
 	}
 
 	public function testFromJsonStringArrayContainingSimpleKVP() {
-		$sut = new JsonObjectBuilder();
-		/** @var JsonArrayPrimitive $jsonObject */
+		$sut = new JSONObjectBuilder();
+		/** @var JSONArrayPrimitive $jsonObject */
 		$jsonObject = $sut->fromJsonString($this->jsonStringArrayContainingSimpleKVP);
-		self::assertInstanceOf(JsonArrayPrimitive::class, $jsonObject);
+		self::assertInstanceOf(JSONArrayPrimitive::class, $jsonObject);
 		$array = $jsonObject->getPrimitiveValue();
 		self::assertCount(3, $array);
 		self::assertSame("one", $array[0]);
 		self::assertSame("two", $array[1]);
 		$object = $array[2];
-		self::assertInstanceOf(JsonKvpObject::class, $object);
+		self::assertInstanceOf(JSONKvpObject::class, $object);
 		self::assertSame(123, $object->getInt("id"));
 		self::assertSame("Example", $object->getString("name"));
 	}
 
 	public function testFromJson_syntaxError() {
 		$jsonString = '{ "name": "Greg", "title: "Clumsy programmer!" }';
-		$sut = new JsonObjectBuilder();
-		self::expectException(JsonDecodeException::class);
+		$sut = new JSONObjectBuilder();
+		self::expectException(JSONDecodeException::class);
 		self::expectExceptionMessage("Error decoding JSON: Syntax error");
 		$sut->fromJsonString($jsonString);
 	}
 
 	public function testFromJson_illegalCharacters() {
 		$jsonString = "{ \"name\": \"Greg\", \"favourite_characters\": \"\xB1\x31\" }";
-		$sut = new JsonObjectBuilder();
-		self::expectException(JsonDecodeException::class);
+		$sut = new JSONObjectBuilder();
+		self::expectException(JSONDecodeException::class);
 		self::expectExceptionMessage("Error decoding JSON: Malformed UTF-8 characters, possibly incorrectly encoded");
 		$sut->fromJsonString($jsonString);
 	}
@@ -210,8 +211,8 @@ class JsonObjectBuilderTest extends TestCase {
 		}
 		JSON;
 
-		$sut = new JsonObjectBuilder(3);
-		self::expectException(JsonDecodeException::class);
+		$sut = new JSONObjectBuilder(3);
+		self::expectException(JSONDecodeException::class);
 		self::expectExceptionMessage("Error decoding JSON: Maximum stack depth exceeded");
 		$sut->fromJsonString($jsonString);
 	}
@@ -219,12 +220,12 @@ class JsonObjectBuilderTest extends TestCase {
 	public function testFromJson_customFlag_bigInt() {
 		$jsonString = '{"num": 9876543210987654321 }';
 
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 		$json = $sut->fromJsonString($jsonString);
 		$num = $json->getString("num");
 		self::assertStringContainsString("E", $num);
 
-		$sut = new JsonObjectBuilder(flags: JSON_BIGINT_AS_STRING);
+		$sut = new JSONObjectBuilder(flags: JSON_BIGINT_AS_STRING);
 		$json = $sut->fromJsonString($jsonString);
 		$num = $json->getString("num");
 		self::assertSame("9876543210987654321", $num);
@@ -233,14 +234,14 @@ class JsonObjectBuilderTest extends TestCase {
 	public function testFromJson_emptyNestedArray():void {
 		$jsonString = '{"key1": [1, 2, 3], "key2": []}';
 
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 		$json = $sut->fromJsonString($jsonString);
 		self::assertSame([1, 2, 3], $json->getArray("key1", "int"));
 		self::assertSame([], $json->getArray("key2", "int"));
 	}
 
 	public function testFromFile_doesNotExist():void {
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 
 		self::expectException(FileNotFoundException::class);
 		$sut->fromFile("/does/not/exist");
@@ -251,9 +252,28 @@ class JsonObjectBuilderTest extends TestCase {
 		$jsonString = '{"org":"PHP.Gt","repo":"json"}';
 		file_put_contents($filePath, $jsonString);
 
-		$sut = new JsonObjectBuilder();
+		$sut = new JSONObjectBuilder();
 		$json = $sut->fromFile($filePath);
 		self::assertSame((string)$json, $jsonString);
 		unlink($filePath);
+	}
+
+	#[RunInSeparateProcess]
+	public function testNamespaceCompatibilityBootstrap():void {
+		self::assertTrue(class_exists("GT\\Json\\JSONObjectBuilder"));
+		self::assertTrue(class_exists("Gt\\Json\\JsonObjectBuilder"));
+		self::assertTrue(class_exists("GT\\Json\\Schema\\JSONDocument"));
+		self::assertTrue(class_exists("Gt\\Json\\Schema\\JsonDocument"));
+
+		$canonicalBuilder = new \GT\Json\JSONObjectBuilder();
+		$legacyBuilder = new \Gt\Json\JsonObjectBuilder();
+		$canonicalObject = $canonicalBuilder->fromJsonString($this->jsonStringSimpleKVP);
+		$jsonObject = $legacyBuilder->fromJsonString($this->jsonStringSimpleKVP);
+
+		self::assertInstanceOf(\GT\Json\JSONObject::class, $canonicalObject);
+		self::assertInstanceOf(\Gt\Json\JsonObject::class, $canonicalObject);
+		self::assertInstanceOf(\GT\Json\JSONKvpObject::class, $jsonObject);
+		self::assertInstanceOf(\Gt\Json\JsonKvpObject::class, $jsonObject);
+		self::assertSame(123, $jsonObject->getInt("id"));
 	}
 }

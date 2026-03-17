@@ -28,12 +28,17 @@
 
 	"autoload": {
 		"psr-4": {
+			"GT\\Json\\": "./src",
 			"Gt\\Json\\": "./src"
-		}
+		},
+		"files": [
+			"class-aliases.php"
+		]
 	},
 
 	"autoload-dev": {
 		"psr-4": {
+			"GT\\Json\\Test\\": "./test/phpunit",
 			"Gt\\Json\\Test\\": "./test/phpunit"
 		}
 	},

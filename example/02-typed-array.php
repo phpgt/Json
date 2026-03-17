@@ -1,6 +1,6 @@
 <?php
-use Gt\Json\JsonObject;
-use Gt\Json\JsonObjectBuilder;
+use GT\Json\JSONObject;
+use GT\Json\JSONObjectBuilder;
 
 require __DIR__ . "/../vendor/autoload.php";
 
@@ -12,7 +12,7 @@ $jsonString = <<<JSON
 }
 JSON;
 
-$builder = new JsonObjectBuilder();
+$builder = new JSONObjectBuilder();
 $json = $builder->fromJsonString($jsonString);
 
 echo "Logged in users: ", implode(", ", $json->getArray("logged_in_user_ids", "int")), PHP_EOL;
@@ -26,7 +26,7 @@ $jsonString = <<<JSON
 }
 JSON;
 
-$builder = new JsonObjectBuilder();
+$builder = new JSONObjectBuilder();
 $json = $builder->fromJsonString($jsonString);
 
 echo "Logged in users: ", implode(", ", $json->getArray("logged_in_user_ids", "int")), PHP_EOL;

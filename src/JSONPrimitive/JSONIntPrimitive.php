@@ -1,7 +1,7 @@
 <?php
-namespace Gt\Json\JsonPrimitive;
+namespace GT\Json\JSONPrimitive;
 
-class JsonIntPrimitive extends JsonPrimitive {
+class JSONIntPrimitive extends JSONPrimitive {
 	public function getPrimitiveValue():int {
 		/** @var bool|int|float|string|null $value */
 		$value = $this->value;

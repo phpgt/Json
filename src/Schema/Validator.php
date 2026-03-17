@@ -1,20 +1,20 @@
 <?php
-namespace Gt\Json\Schema;
+namespace GT\Json\Schema;
 
-use Gt\Json\JsonKvpObject;
-use Gt\Json\JsonObject;
-use Gt\Json\JsonPrimitive\JsonPrimitive;
+use GT\Json\JSONKvpObject;
+use GT\Json\JSONObject;
+use GT\Json\JSONPrimitive\JSONPrimitive;
 use JsonSchema\Validator as JsonSchemaValidator;
 
 class Validator {
 	public function __construct(
-		private ?JsonObject $schema = null,
+		private ?JSONObject $schema = null,
 	) {}
 
-	public function validate(JsonObject $json):ValidationResult {
+	public function validate(JSONObject $json):ValidationResult {
 		if($this->schema) {
 			$validator = new JsonSchemaValidator();
-			$object = $json instanceof JsonPrimitive
+			$object = $json instanceof JSONPrimitive
 				? $json->getPrimitiveValue()
 				: $json->asObject();
 			$validator->validate($object, $this->schema->asObject());

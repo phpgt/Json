@@ -1,8 +1,8 @@
 <?php
-namespace Gt\Json\Test\Schema;
+namespace GT\Json\Test\Schema;
 
-use Gt\Json\JsonKvpObject;
-use Gt\Json\Schema\ValidationError;
+use GT\Json\JSONKvpObject;
+use GT\Json\Schema\ValidationError;
 use PHPUnit\Framework\TestCase;
 
 class ValidationErrorTest extends TestCase {
@@ -12,7 +12,7 @@ class ValidationErrorTest extends TestCase {
 			"/something" => "This is an example error on the something property",
 		];
 
-		$schema = self::createMock(JsonKvpObject::class);
+		$schema = self::createMock(JSONKvpObject::class);
 		$sut = new ValidationError($schema, $expectedErrorList);
 		self::assertSame($expectedErrorList, $sut->getErrorList());
 	}
@@ -29,7 +29,7 @@ class ValidationErrorTest extends TestCase {
 			"type" => "object",
 			"additionalProperties" => false,
 		];
-		$schema = self::createMock(JsonKvpObject::class);
+		$schema = self::createMock(JSONKvpObject::class);
 		$schema->expects(self::once())
 			->method("jsonSerialize")
 			->willReturn($expectedSchemaData);

@@ -1,9 +1,9 @@
 <?php
-namespace Gt\Json\JsonPrimitive;
+namespace GT\Json\JSONPrimitive;
 
-use Gt\Json\JsonDecodeException;
+use GT\Json\JSONDecodeException;
 
-class JsonStringPrimitive extends JsonPrimitive {
+class JSONStringPrimitive extends JSONPrimitive {
 	public function getPrimitiveValue():string {
 		/** @var bool|int|float|string|null $value */
 		$value = $this->value;

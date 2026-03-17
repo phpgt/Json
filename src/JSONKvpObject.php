@@ -1,10 +1,10 @@
 <?php
-namespace Gt\Json;
+namespace GT\Json;
 
 use Iterator;
 
 /** @implements Iterator<null|int|string, mixed> */
-class JsonKvpObject extends JsonObject implements Iterator {
+class JSONKvpObject extends JSONObject implements Iterator {
 	public function rewind():void {
 		reset($this->data);
 	}
