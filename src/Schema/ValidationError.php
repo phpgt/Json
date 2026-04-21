@@ -2,15 +2,15 @@
 namespace GT\Json\Schema;
 
 use Gt\DataObject\DataObject;
-use GT\Json\JsonKvpObject;
-use GT\Json\JsonObject;
-use GT\Json\JsonObjectBuilder;
+use GT\Json\JSONKvpObject;
+use GT\Json\JSONObject;
+use GT\Json\JSONObjectBuilder;
 use JsonSerializable;
 
 class ValidationError extends ValidationResult implements JsonSerializable {
 	/** @param array<string> $errorList */
 	public function __construct(
-		private JsonObject $schema,
+		private JSONObject $schema,
 		private array $errorList,
 	) {}
 
@@ -20,7 +20,7 @@ class ValidationError extends ValidationResult implements JsonSerializable {
 	}
 
 	public function jsonSerialize():DataObject {
-		$builder = new JsonObjectBuilder();
+		$builder = new JSONObjectBuilder();
 		$errorObject = $builder->fromAssociativeArray([
 			"error" => "The provided object does not match the schema",
 			"errorList" => $this->errorList,

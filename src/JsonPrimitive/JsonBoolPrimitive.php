@@ -1,8 +1,4 @@
 <?php
-namespace GT\Json\JsonPrimitive;
+// Legacy PSR-4 shim to preserve the pre-JSON* public API for dependents.
 
-class JsonBoolPrimitive extends JsonPrimitive {
-	public function getPrimitiveValue():bool {
-		return (bool)$this->value;
-	}
-}
+require_once dirname(__DIR__) . "/JSONPrimitive/JSONBoolPrimitive.php";

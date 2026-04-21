@@ -1,27 +1,4 @@
 <?php
-namespace GT\Json;
+// Legacy PSR-4 shim to preserve the pre-JSON* public API for dependents.
 
-use Iterator;
-
-/** @implements Iterator<null|int|string, mixed> */
-class JsonKvpObject extends JsonObject implements Iterator {
-	public function rewind():void {
-		reset($this->data);
-	}
-
-	public function current():mixed {
-		return current($this->data);
-	}
-
-	public function next():void {
-		next($this->data);
-	}
-
-	public function key():null|int|string {
-		return key($this->data);
-	}
-
-	public function valid():bool {
-		return isset($this->data[$this->key() ?? ""]);
-	}
-}
+require_once __DIR__ . "/JSONKvpObject.php";

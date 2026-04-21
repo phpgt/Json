@@ -1,10 +1,4 @@
 <?php
-namespace GT\Json\JsonPrimitive;
+// Legacy PSR-4 shim to preserve the pre-JSON* public API for dependents.
 
-class JsonIntPrimitive extends JsonPrimitive {
-	public function getPrimitiveValue():int {
-		/** @var bool|int|float|string|null $value */
-		$value = $this->value;
-		return (int)$value;
-	}
-}
+require_once dirname(__DIR__) . "/JSONPrimitive/JSONIntPrimitive.php";

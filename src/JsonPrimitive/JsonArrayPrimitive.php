@@ -1,9 +1,4 @@
 <?php
-namespace GT\Json\JsonPrimitive;
+// Legacy PSR-4 shim to preserve the pre-JSON* public API for dependents.
 
-class JsonArrayPrimitive extends JsonPrimitive {
-	/** @return array<int, mixed> */
-	public function getPrimitiveValue():array {
-		return (array)$this->value;
-	}
-}
+require_once dirname(__DIR__) . "/JSONPrimitive/JSONArrayPrimitive.php";

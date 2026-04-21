@@ -1,20 +1,4 @@
 <?php
-namespace GT\Json;
+// Legacy PSR-4 shim to preserve the pre-JSON* public API for dependents.
 
-use Gt\DataObject\DataObject;
-use GT\Json\JsonPrimitive\JsonPrimitive;
-use Stringable;
-
-abstract class JsonObject extends DataObject implements Stringable {
-	public function __toString():string {
-		return json_encode($this, JSON_THROW_ON_ERROR);
-	}
-
-	public function jsonSerialize():mixed {
-		if($this instanceof JsonPrimitive) {
-			return $this->getPrimitiveValue();
-		}
-
-		return parent::jsonSerialize();
-	}
-}
+require_once __DIR__ . "/JSONObject.php";

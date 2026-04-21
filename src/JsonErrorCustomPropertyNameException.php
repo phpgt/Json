@@ -1,4 +1,4 @@
 <?php
-namespace GT\Json;
+// Legacy PSR-4 shim to preserve the pre-JSON* public API for dependents.
 
-class JsonErrorCustomPropertyNameException extends JsonException {}
+require_once __DIR__ . "/JSONErrorCustomPropertyNameException.php";

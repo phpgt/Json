@@ -1,8 +1,4 @@
 <?php
-namespace GT\Json\JsonPrimitive;
+// Legacy PSR-4 shim to preserve the pre-JSON* public API for dependents.
 
-class JsonNullPrimitive extends JsonPrimitive {
-	public function getPrimitiveValue():mixed {
-		return null;
-	}
-}
+require_once dirname(__DIR__) . "/JSONPrimitive/JSONNullPrimitive.php";

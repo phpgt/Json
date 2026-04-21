@@ -1,7 +1,7 @@
 <?php
 // The JSON we will validate. Notice that one of the array keys is not a string,
 // and the "colour" property is misspelled.
-use GT\Json\JsonObjectBuilder;
+use GT\Json\JSONObjectBuilder;
 use GT\Json\Schema\ValidationError;
 use GT\Json\Schema\Validator;
 
@@ -48,7 +48,7 @@ $schemaString = <<<JSON
 }
 JSON;
 
-$builder = new JsonObjectBuilder();
+$builder = new JSONObjectBuilder();
 
 $schema = $builder->fromJsonString($schemaString);
 $json = $builder->fromJsonString($jsonString);

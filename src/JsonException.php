@@ -1,6 +1,4 @@
 <?php
-namespace GT\Json;
+// Legacy PSR-4 shim to preserve the pre-JSON* public API for dependents.
 
-use RuntimeException;
-
-class JsonException extends RuntimeException {}
+require_once __DIR__ . "/JSONException.php";

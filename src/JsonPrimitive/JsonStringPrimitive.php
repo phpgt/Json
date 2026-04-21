@@ -1,12 +1,4 @@
 <?php
-namespace GT\Json\JsonPrimitive;
+// Legacy PSR-4 shim to preserve the pre-JSON* public API for dependents.
 
-use GT\Json\JsonDecodeException;
-
-class JsonStringPrimitive extends JsonPrimitive {
-	public function getPrimitiveValue():string {
-		/** @var bool|int|float|string|null $value */
-		$value = $this->value;
-		return (string)$value;
-	}
-}
+require_once dirname(__DIR__) . "/JSONPrimitive/JSONStringPrimitive.php";
