@@ -1,8 +1,8 @@
 <?php
-namespace Gt\Json;
+namespace GT\Json;
 
 use Gt\DataObject\DataObject;
-use Gt\Json\JsonPrimitive\JsonPrimitive;
+use GT\Json\JsonPrimitive\JsonPrimitive;
 use Stringable;
 
 abstract class JsonObject extends DataObject implements Stringable {

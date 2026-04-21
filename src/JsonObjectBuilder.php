@@ -1,14 +1,14 @@
 <?php
-namespace Gt\Json;
+namespace GT\Json;
 
 use Gt\DataObject\DataObjectBuilder;
-use Gt\Json\JsonPrimitive\JsonArrayPrimitive;
-use Gt\Json\JsonPrimitive\JsonBoolPrimitive;
-use Gt\Json\JsonPrimitive\JsonFloatPrimitive;
-use Gt\Json\JsonPrimitive\JsonIntPrimitive;
-use Gt\Json\JsonPrimitive\JsonNullPrimitive;
-use Gt\Json\JsonPrimitive\JsonPrimitive;
-use Gt\Json\JsonPrimitive\JsonStringPrimitive;
+use GT\Json\JsonPrimitive\JsonArrayPrimitive;
+use GT\Json\JsonPrimitive\JsonBoolPrimitive;
+use GT\Json\JsonPrimitive\JsonFloatPrimitive;
+use GT\Json\JsonPrimitive\JsonIntPrimitive;
+use GT\Json\JsonPrimitive\JsonNullPrimitive;
+use GT\Json\JsonPrimitive\JsonPrimitive;
+use GT\Json\JsonPrimitive\JsonStringPrimitive;
 use JsonException as NativeJsonException;
 use stdClass;
 

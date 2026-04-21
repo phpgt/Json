@@ -1,5 +1,5 @@
 <?php
-namespace Gt\Json\JsonPrimitive;
+namespace GT\Json\JsonPrimitive;
 
 class JsonIntPrimitive extends JsonPrimitive {
 	public function getPrimitiveValue():int {

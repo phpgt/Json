@@ -1,5 +1,5 @@
 <?php
-namespace Gt\Json\Schema;
+namespace GT\Json\Schema;
 
 abstract class ValidationResult {
 }

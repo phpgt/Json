@@ -1,5 +1,5 @@
 <?php
-namespace Gt\Json\JsonPrimitive;
+namespace GT\Json\JsonPrimitive;
 
 class JsonArrayPrimitive extends JsonPrimitive {
 	/** @return array<int, mixed> */

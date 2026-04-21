@@ -1,6 +1,6 @@
 <?php
-use Gt\Json\JsonObject;
-use Gt\Json\JsonObjectBuilder;
+use GT\Json\JsonObject;
+use GT\Json\JsonObjectBuilder;
 
 require __DIR__ . "/../vendor/autoload.php";
 

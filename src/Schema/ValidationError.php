@@ -1,10 +1,10 @@
 <?php
-namespace Gt\Json\Schema;
+namespace GT\Json\Schema;
 
 use Gt\DataObject\DataObject;
-use Gt\Json\JsonKvpObject;
-use Gt\Json\JsonObject;
-use Gt\Json\JsonObjectBuilder;
+use GT\Json\JsonKvpObject;
+use GT\Json\JsonObject;
+use GT\Json\JsonObjectBuilder;
 use JsonSerializable;
 
 class ValidationError extends ValidationResult implements JsonSerializable {

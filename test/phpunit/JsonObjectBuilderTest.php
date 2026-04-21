@@ -1,16 +1,16 @@
 <?php
-namespace Gt\Json\Test;
+namespace GT\Json\Test;
 
-use Gt\Json\FileNotFoundException;
-use Gt\Json\JsonDecodeException;
-use Gt\Json\JsonKvpObject;
-use Gt\Json\JsonObjectBuilder;
-use Gt\Json\JsonPrimitive\JsonArrayPrimitive;
-use Gt\Json\JsonPrimitive\JsonBoolPrimitive;
-use Gt\Json\JsonPrimitive\JsonFloatPrimitive;
-use Gt\Json\JsonPrimitive\JsonIntPrimitive;
-use Gt\Json\JsonPrimitive\JsonNullPrimitive;
-use Gt\Json\JsonPrimitive\JsonStringPrimitive;
+use GT\Json\FileNotFoundException;
+use GT\Json\JsonDecodeException;
+use GT\Json\JsonKvpObject;
+use GT\Json\JsonObjectBuilder;
+use GT\Json\JsonPrimitive\JsonArrayPrimitive;
+use GT\Json\JsonPrimitive\JsonBoolPrimitive;
+use GT\Json\JsonPrimitive\JsonFloatPrimitive;
+use GT\Json\JsonPrimitive\JsonIntPrimitive;
+use GT\Json\JsonPrimitive\JsonNullPrimitive;
+use GT\Json\JsonPrimitive\JsonStringPrimitive;
 use PHPUnit\Framework\TestCase;
 
 class JsonObjectBuilderTest extends TestCase {
