@@ -1,4 +1,4 @@
 <?php
-namespace Gt\Json;
+namespace GT\Json;
 
 class JsonTypeException extends JsonException {}

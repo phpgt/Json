@@ -1,8 +1,8 @@
 <?php
-namespace Gt\Json\Test\Schema;
+namespace GT\Json\Test\Schema;
 
-use Gt\Json\JsonKvpObject;
-use Gt\Json\Schema\ValidationError;
+use GT\Json\JsonKvpObject;
+use GT\Json\Schema\ValidationError;
 use PHPUnit\Framework\TestCase;
 
 class ValidationErrorTest extends TestCase {

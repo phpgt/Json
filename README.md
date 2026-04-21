@@ -44,9 +44,9 @@ Usage example
 -------------
 
 ```php
-use Gt\Json\JsonObjectBuilder;
-use Gt\Json\JsonKvpObject;
-use Gt\Json\JsonPrimitive\JsonPrimitive;
+use GT\Json\JsonObjectBuilder;
+use GT\Json\JsonKvpObject;
+use GT\Json\JsonPrimitive\JsonPrimitive;
 
 $response = file_get_contents("https://example.com/details.json");
 $builder = new JsonObjectBuilder();

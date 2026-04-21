@@ -1,9 +1,9 @@
 <?php
-namespace Gt\Json\Schema;
+namespace GT\Json\Schema;
 
-use Gt\Json\JsonKvpObject;
-use Gt\Json\JsonObject;
-use Gt\Json\JsonPrimitive\JsonPrimitive;
+use GT\Json\JsonKvpObject;
+use GT\Json\JsonObject;
+use GT\Json\JsonPrimitive\JsonPrimitive;
 use JsonSchema\Validator as JsonSchemaValidator;
 
 class Validator {

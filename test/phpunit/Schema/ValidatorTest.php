@@ -1,11 +1,11 @@
 <?php
-namespace Gt\Json\Test\Schema;
+namespace GT\Json\Test\Schema;
 
-use Gt\Json\JsonObjectBuilder;
-use Gt\Json\JsonPrimitive\JsonStringPrimitive;
-use Gt\Json\Schema\ValidationError;
-use Gt\Json\Schema\ValidationSuccess;
-use Gt\Json\Schema\Validator;
+use GT\Json\JsonObjectBuilder;
+use GT\Json\JsonPrimitive\JsonStringPrimitive;
+use GT\Json\Schema\ValidationError;
+use GT\Json\Schema\ValidationSuccess;
+use GT\Json\Schema\Validator;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 

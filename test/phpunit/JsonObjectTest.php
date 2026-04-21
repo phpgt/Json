@@ -1,11 +1,11 @@
 <?php
-namespace Gt\Json\Test;
-use Gt\Json\JsonKvpObject;
-use Gt\Json\JsonPrimitive\JsonBoolPrimitive;
-use Gt\Json\JsonPrimitive\JsonFloatPrimitive;
-use Gt\Json\JsonPrimitive\JsonIntPrimitive;
-use Gt\Json\JsonPrimitive\JsonNullPrimitive;
-use Gt\Json\JsonPrimitive\JsonStringPrimitive;
+namespace GT\Json\Test;
+use GT\Json\JsonKvpObject;
+use GT\Json\JsonPrimitive\JsonBoolPrimitive;
+use GT\Json\JsonPrimitive\JsonFloatPrimitive;
+use GT\Json\JsonPrimitive\JsonIntPrimitive;
+use GT\Json\JsonPrimitive\JsonNullPrimitive;
+use GT\Json\JsonPrimitive\JsonStringPrimitive;
 use PHPUnit\Framework\TestCase;
 
 class JsonObjectTest extends TestCase {

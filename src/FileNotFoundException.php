@@ -1,4 +1,4 @@
 <?php
-namespace Gt\Json;
+namespace GT\Json;
 
 class FileNotFoundException extends JsonException { }

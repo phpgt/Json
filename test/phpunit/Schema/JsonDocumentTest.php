@@ -1,12 +1,12 @@
 <?php
-namespace Gt\Json\Test\Schema;
+namespace GT\Json\Test\Schema;
 
-use Gt\Json\JsonErrorCustomPropertyNameException;
-use Gt\Json\JsonErrorStateException;
-use Gt\Json\JsonObjectBuilder;
-use Gt\Json\JsonPrimitive\JsonArrayPrimitive;
-use Gt\Json\JsonPrimitive\JsonStringPrimitive;
-use Gt\Json\Schema\JsonDocument;
+use GT\Json\JsonErrorCustomPropertyNameException;
+use GT\Json\JsonErrorStateException;
+use GT\Json\JsonObjectBuilder;
+use GT\Json\JsonPrimitive\JsonArrayPrimitive;
+use GT\Json\JsonPrimitive\JsonStringPrimitive;
+use GT\Json\Schema\JsonDocument;
 use PHPUnit\Framework\TestCase;
 
 class JsonDocumentTest extends TestCase {

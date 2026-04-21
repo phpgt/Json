@@ -1,5 +1,5 @@
 <?php
-namespace Gt\Json\JsonPrimitive;
+namespace GT\Json\JsonPrimitive;
 
 class JsonFloatPrimitive extends JsonPrimitive {
 	public function getPrimitiveValue():float {

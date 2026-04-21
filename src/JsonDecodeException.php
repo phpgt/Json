@@ -1,5 +1,5 @@
 <?php
-namespace Gt\Json;
+namespace GT\Json;
 
 use Throwable;
 

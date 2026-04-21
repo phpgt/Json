@@ -1,6 +1,4 @@
 <?php
-namespace Gt\Json;
-
-use Throwable;
+namespace GT\Json;
 
 class JsonErrorStateException extends JsonException {}

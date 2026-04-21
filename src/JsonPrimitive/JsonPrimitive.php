@@ -1,8 +1,8 @@
 <?php
-namespace Gt\Json\JsonPrimitive;
+namespace GT\Json\JsonPrimitive;
 
-use Gt\Json\JsonDecodeException;
-use Gt\Json\JsonObject;
+use GT\Json\JsonDecodeException;
+use GT\Json\JsonObject;
 
 abstract class JsonPrimitive extends JsonObject {
 	/** @var object|bool|int|float|string|array<int, mixed>|null */

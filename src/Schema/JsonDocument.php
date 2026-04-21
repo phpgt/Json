@@ -1,16 +1,16 @@
 <?php
-namespace Gt\Json\Schema;
+namespace GT\Json\Schema;
 
-use Gt\Json\JsonErrorCustomPropertyNameException;
-use Gt\Json\JsonErrorStateException;
-use Gt\Json\JsonKvpObject;
-use Gt\Json\JsonObject;
-use Gt\Json\JsonTypeException;
+use GT\Json\JsonErrorCustomPropertyNameException;
+use GT\Json\JsonErrorStateException;
+use GT\Json\JsonKvpObject;
+use GT\Json\JsonObject;
+use GT\Json\JsonTypeException;
 
 class JsonDocument {
 	private bool $hasError = false;
-	/** @var callable */
-	private $errorCallback;
+	/** @var null|callable(string, null|array<string, mixed>):void */
+	private $errorCallback = null;
 
 	public function __construct(
 		private ?JsonObject $jsonObject = null,
@@ -79,7 +79,7 @@ class JsonDocument {
 		}
 
 		$this->hasError = true;
-		if(isset($this->errorCallback)) {
+		if($this->errorCallback !== null) {
 			call_user_func($this->errorCallback, $message, $context);
 		}
 	}

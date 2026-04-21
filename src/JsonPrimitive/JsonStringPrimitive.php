@@ -1,7 +1,7 @@
 <?php
-namespace Gt\Json\JsonPrimitive;
+namespace GT\Json\JsonPrimitive;
 
-use Gt\Json\JsonDecodeException;
+use GT\Json\JsonDecodeException;
 
 class JsonStringPrimitive extends JsonPrimitive {
 	public function getPrimitiveValue():string {
