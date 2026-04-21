@@ -1,19 +1,19 @@
 <?php
 namespace GT\Json\Schema;
 
-use GT\Json\JsonErrorCustomPropertyNameException;
-use GT\Json\JsonErrorStateException;
-use GT\Json\JsonKvpObject;
-use GT\Json\JsonObject;
-use GT\Json\JsonTypeException;
+use GT\Json\JSONErrorCustomPropertyNameException;
+use GT\Json\JSONErrorStateException;
+use GT\Json\JSONKvpObject;
+use GT\Json\JSONObject;
+use GT\Json\JSONTypeException;
 
-class JsonDocument {
+class JSONDocument {
 	private bool $hasError = false;
 	/** @var null|callable(string, null|array<string, mixed>):void */
 	private $errorCallback = null;
 
 	public function __construct(
-		private ?JsonObject $jsonObject = null,
+		private ?JSONObject $jsonObject = null,
 	) {}
 
 	public function __toString():string {
@@ -24,7 +24,7 @@ class JsonDocument {
 		return json_encode($this->jsonObject) ?: "";
 	}
 
-	public function setObject(JsonObject $jsonObject):void {
+	public function setObject(JSONObject $jsonObject):void {
 		$this->jsonObject = $jsonObject;
 	}
 
@@ -33,14 +33,14 @@ class JsonDocument {
 	 *
 	 * @param string $key The key to set, can use dot notation for nested objects
 	 * @param mixed $value The value to set
-	 * @throws JsonTypeException If the document object is not a JsonKvpObject
+	 * @throws JSONTypeException If the document object is not a JSONKvpObject
 	 */
 	public function set(string $key, mixed $value):void {
 		if ($this->hasError) {
-			throw new JsonErrorStateException();
+			throw new JSONErrorStateException();
 		}
 
-		$this->ensureJsonKvpObject();
+		$this->ensureJSONKvpObject();
 
 		if(!str_contains($key, ".")) {
 			$this->setSimpleKey($key, $value);
@@ -59,7 +59,7 @@ class JsonDocument {
 	 * @param string $property Optional property name for the error message
 	 * @param string $contextProperty Optional property name for the error context array
 	 *
-	 * @throws JsonErrorCustomPropertyNameException If clashing property names are provided
+	 * @throws JSONErrorCustomPropertyNameException If clashing property names are provided
 	 */
 	public function error(
 		string $message,
@@ -72,7 +72,7 @@ class JsonDocument {
 
 		if ($context) {
 			if ($property === $contextProperty) {
-				throw new JsonErrorCustomPropertyNameException();
+				throw new JSONErrorCustomPropertyNameException();
 			}
 
 			$this->set($contextProperty, $context);
@@ -89,17 +89,17 @@ class JsonDocument {
 	}
 
 	/**
-	 * Ensure that the document object is a JsonKvpObject.
+	 * Ensure that the document object is a JSONKvpObject.
 	 *
-	 * @throws JsonTypeException If the document object is not a JsonKvpObject
+	 * @throws JSONTypeException If the document object is not a JSONKvpObject
 	 */
-	private function ensureJsonKvpObject():void {
+	private function ensureJSONKvpObject():void {
 		if(!$this->jsonObject) {
-			$this->jsonObject = new JsonKvpObject();
+			$this->jsonObject = new JSONKvpObject();
 		}
 
-		if(!$this->jsonObject instanceof JsonKvpObject) {
-			throw new JsonTypeException("Internal document object is already set as not a " . JsonKvpObject::class);
+		if(!$this->jsonObject instanceof JSONKvpObject) {
+			throw new JSONTypeException("Internal document object is already set as not a " . JSONKvpObject::class);
 		}
 	}
 
@@ -125,12 +125,12 @@ class JsonDocument {
 
 		// Get or create the current level object
 		$currentObject = $this->jsonObject->contains($currentKey) &&
-		$this->jsonObject->get($currentKey) instanceof JsonKvpObject
+		$this->jsonObject->get($currentKey) instanceof JSONKvpObject
 			? $this->jsonObject->get($currentKey)
-			: new JsonKvpObject();
+			: new JSONKvpObject();
 
 		// Create a temporary document to handle the remaining key parts
-		$tempDoc = new JsonDocument($currentObject);
+		$tempDoc = new JSONDocument($currentObject);
 		$tempDoc->set($remainingKey, $value);
 
 		// Update the root object
@@ -141,9 +141,9 @@ class JsonDocument {
 	 * Get a value from the document using dot notation for nested objects.
 	 *
 	 * @param string $key The key to get, can use dot notation for nested objects
-	 * @return null|bool|int|float|string|JsonObject|JsonDocument The value at the specified key
+	 * @return null|bool|int|float|string|JSONObject|JSONDocument The value at the specified key
 	 */
-	public function get(string $key):null|bool|int|float|string|JsonObject|JsonDocument {
+	public function get(string $key):null|bool|int|float|string|JSONObject|JSONDocument {
 		if(!isset($this->jsonObject)) {
 			return null;
 		}
@@ -159,18 +159,18 @@ class JsonDocument {
 	 * Get a value from a simple key in the document.
 	 *
 	 * @param string $key The key to get
-	 * @return null|bool|int|float|string|JsonObject|JsonDocument The value at the specified key
+	 * @return null|bool|int|float|string|JSONObject|JSONDocument The value at the specified key
 	 */
-	private function getSimpleKey(string $key):null|bool|int|float|string|JsonObject|JsonDocument {
+	private function getSimpleKey(string $key):null|bool|int|float|string|JSONObject|JSONDocument {
 		if(!$this->jsonObject) {
 			return null;
 		}
 
 		$value = $this->jsonObject->get($key);
 
-		if($value instanceof JsonObject) {
-			// Wrap JsonObject in a JsonDocument to support nested dot notation
-			return new JsonDocument($value);
+		if($value instanceof JSONObject) {
+			// Wrap JSONObject in a JSONDocument to support nested dot notation
+			return new JSONDocument($value);
 		}
 
 		return $this->formatReturnValue($value);
@@ -180,9 +180,9 @@ class JsonDocument {
 	 * Get a value from a nested key in the document using dot notation.
 	 *
 	 * @param string $key The key to get, using dot notation
-	 * @return null|bool|int|float|string|JsonObject The value at the specified key
+	 * @return null|bool|int|float|string|JSONObject The value at the specified key
 	 */
-	private function getNestedKey(string $key):null|bool|int|float|string|JsonObject {
+	private function getNestedKey(string $key):null|bool|int|float|string|JSONObject {
 		if(!$this->jsonObject) {
 			return null;
 		}
@@ -195,12 +195,12 @@ class JsonDocument {
 	 * Traverse the key parts to find the value at the specified path.
 	 *
 	 * @param array<int, string> $keyParts The key parts to traverse
-	 * @param JsonObject $currentObject The current object being traversed
-	 * @return null|bool|int|float|string|JsonObject The value at the specified path
+	 * @param JSONObject $currentObject The current object being traversed
+	 * @return null|bool|int|float|string|JSONObject The value at the specified path
 	 */
-	private function traverseKeyParts(array $keyParts, JsonObject $currentObject):null|bool|int|float|string|JsonObject {
+	private function traverseKeyParts(array $keyParts, JSONObject $currentObject):null|bool|int|float|string|JSONObject {
 		foreach($keyParts as $i => $part) {
-			if(!$currentObject instanceof JsonKvpObject || !$currentObject->contains($part)) {
+			if(!$currentObject instanceof JSONKvpObject || !$currentObject->contains($part)) {
 				return null;
 			}
 
@@ -221,9 +221,9 @@ class JsonDocument {
 	 * Format the return value to ensure it matches the expected return type.
 	 *
 	 * @param mixed $value The value to format
-	 * @return null|bool|int|float|string|JsonObject The formatted value
+	 * @return null|bool|int|float|string|JSONObject The formatted value
 	 */
-	private function formatReturnValue(mixed $value):null|bool|int|float|string|JsonObject {
+	private function formatReturnValue(mixed $value):null|bool|int|float|string|JSONObject {
 		if(is_null($value)) {
 			return null;
 		}
@@ -232,7 +232,7 @@ class JsonDocument {
 			return $value;
 		}
 
-		if($value instanceof JsonObject) {
+		if($value instanceof JSONObject) {
 			return $value;
 		}
 

@@ -3,4 +3,4 @@ namespace GT\Json;
 
 use RuntimeException;
 
-class JsonException extends RuntimeException {}
+class JSONException extends RuntimeException {}

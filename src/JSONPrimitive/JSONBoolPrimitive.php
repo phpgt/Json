@@ -1,7 +1,7 @@
 <?php
-namespace GT\Json\JsonPrimitive;
+namespace GT\Json\JSONPrimitive;
 
-class JsonBoolPrimitive extends JsonPrimitive {
+class JSONBoolPrimitive extends JSONPrimitive {
 	public function getPrimitiveValue():bool {
 		return (bool)$this->value;
 	}

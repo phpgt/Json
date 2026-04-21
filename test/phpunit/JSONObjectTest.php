@@ -1,52 +1,52 @@
 <?php
 namespace GT\Json\Test;
-use GT\Json\JsonKvpObject;
-use GT\Json\JsonPrimitive\JsonBoolPrimitive;
-use GT\Json\JsonPrimitive\JsonFloatPrimitive;
-use GT\Json\JsonPrimitive\JsonIntPrimitive;
-use GT\Json\JsonPrimitive\JsonNullPrimitive;
-use GT\Json\JsonPrimitive\JsonStringPrimitive;
+use GT\Json\JSONKvpObject;
+use GT\Json\JSONPrimitive\JSONBoolPrimitive;
+use GT\Json\JSONPrimitive\JSONFloatPrimitive;
+use GT\Json\JSONPrimitive\JSONIntPrimitive;
+use GT\Json\JSONPrimitive\JSONNullPrimitive;
+use GT\Json\JSONPrimitive\JSONStringPrimitive;
 use PHPUnit\Framework\TestCase;
 
-class JsonObjectTest extends TestCase {
+class JSONObjectTest extends TestCase {
 	public function testToString():void {
-		$sut = (new JsonKvpObject())
+		$sut = (new JSONKvpObject())
 			->with("key1", "value1")
 			->with("key2", "value2");
 		self::assertSame('{"key1":"value1","key2":"value2"}', (string)$sut);
 	}
 
 	public function testToString_scalarString():void {
-		$sut = (new JsonStringPrimitive())
+		$sut = (new JSONStringPrimitive())
 			->withPrimitiveValue("example");
 		self::assertSame("\"example\"", (string)$sut);
 	}
 
 	public function testToString_scalarInt():void {
-		$sut = (new JsonIntPrimitive())
+		$sut = (new JSONIntPrimitive())
 			->withPrimitiveValue(105);
 		self::assertSame("105", (string)$sut);
 	}
 
 	public function testToString_scalarFloat():void {
-		$sut = (new JsonFloatPrimitive())
+		$sut = (new JSONFloatPrimitive())
 			->withPrimitiveValue(12.34);
 		self::assertSame("12.34", (string)$sut);
 	}
 
 	public function testToString_scalarBool():void {
-		$sut = (new JsonBoolPrimitive())
+		$sut = (new JSONBoolPrimitive())
 			->withPrimitiveValue(true);
 		self::assertSame("true", (string)$sut);
 	}
 
 	public function testToString_scalarNull():void {
-		$sut = (new JsonNullPrimitive());
+		$sut = (new JSONNullPrimitive());
 		self::assertSame("null", (string)$sut);
 	}
 
 	public function testForeach():void {
-		$sut = new JsonKvpObject();
+		$sut = new JSONKvpObject();
 		$i = 0;
 		foreach($sut as $value) {
 			$i++;
@@ -61,7 +61,7 @@ class JsonObjectTest extends TestCase {
 			"key2" => "value2",
 			"key3" => [1, 2, 3],
 		];
-		$sut = new JsonKvpObject();
+		$sut = new JSONKvpObject();
 		foreach($kvp as $key => $value) {
 			$sut = $sut->with($key, $value);
 		}

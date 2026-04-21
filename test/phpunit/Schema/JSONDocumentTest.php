@@ -1,46 +1,46 @@
 <?php
 namespace GT\Json\Test\Schema;
 
-use GT\Json\JsonErrorCustomPropertyNameException;
-use GT\Json\JsonErrorStateException;
-use GT\Json\JsonObjectBuilder;
-use GT\Json\JsonPrimitive\JsonArrayPrimitive;
-use GT\Json\JsonPrimitive\JsonStringPrimitive;
-use GT\Json\Schema\JsonDocument;
+use GT\Json\JSONErrorCustomPropertyNameException;
+use GT\Json\JSONErrorStateException;
+use GT\Json\JSONObjectBuilder;
+use GT\Json\JSONPrimitive\JSONArrayPrimitive;
+use GT\Json\JSONPrimitive\JSONStringPrimitive;
+use GT\Json\Schema\JSONDocument;
 use PHPUnit\Framework\TestCase;
 
-class JsonDocumentTest extends TestCase {
+class JSONDocumentTest extends TestCase {
 	public function testToString_empty():void {
 // An empty response should be zero bytes, because `null` is still a datum that
 // represents some kind of response. If there is no data, `null` is not
 // accurate.
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 		self::assertSame("", (string)$sut);
 	}
 
 	public function testToString_array():void {
 		$testArray = ["One", "Two", "Three"];
 
-		$jsonArrayPrimitive = new JsonArrayPrimitive();
+		$jsonArrayPrimitive = new JSONArrayPrimitive();
 		$jsonArrayPrimitive = $jsonArrayPrimitive->withPrimitiveValue($testArray);
-		$sut = new JsonDocument($jsonArrayPrimitive);
+		$sut = new JSONDocument($jsonArrayPrimitive);
 		self::assertSame(json_encode($testArray), (string)$sut);
 	}
 
 	public function testSetObject_stringPrimitive():void {
-		$jsonObject = (new JsonStringPrimitive())->withPrimitiveValue("test");
-		$sut = new JsonDocument();
+		$jsonObject = (new JSONStringPrimitive())->withPrimitiveValue("test");
+		$sut = new JSONDocument();
 		$sut->setObject($jsonObject);
 		self::assertSame("\"test\"", (string)$sut);
 	}
 
 	public function testSetObject_complexObject():void {
-		$builder = new JsonObjectBuilder();
+		$builder = new JSONObjectBuilder();
 		$jsonObject = $builder->fromAssociativeArray([
 			"name" => "John Carmack",
 			"releases" => ["Shadowforge", "Catacomb", "Commander Keen", "Wolfenstein", "Doom", "Quake"],
 		]);
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 		$sut->setObject($jsonObject);
 
 		self::assertSame(
@@ -50,32 +50,32 @@ class JsonDocumentTest extends TestCase {
 	}
 
 	public function testGet_notSet():void {
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 		self::assertNull($sut->get("nothing"));
 	}
 
 	public function testSet():void {
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 		$name = "John Carmack";
 		$sut->set("name", $name);
 		self::assertSame($name, (string)$sut->get("name"));
 	}
 
 	public function testSet_nested():void {
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 		$sut->set("department.name", "Computer Science");
 		self::assertSame("Computer Science", $sut->get("department.name"));
 	}
 
 	public function testSet_nestedGet():void {
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 		$sut->set("department.name", "Computer Science");
 		$department = $sut->get("department");
 		self::assertSame("Computer Science", $department->get("name"));
 	}
 
 	public function testSet_veryNested():void {
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 		$sut->set("one.two.three.four.five", "example");
 		$one = $sut->get("one");
 		$two = $one->get("two");
@@ -89,21 +89,21 @@ class JsonDocumentTest extends TestCase {
 			"age" => 99,
 			"list" => ["One", "Two", "Three"]
 		];
-		$builder = new JsonObjectBuilder();
+		$builder = new JSONObjectBuilder();
 		$jsonObject = $builder->fromJsonDecoded($exampleArray);
-		$sut = new JsonDocument($jsonObject);
+		$sut = new JSONDocument($jsonObject);
 		self::assertSame(json_encode($exampleArray), (string)$sut);
 	}
 
 	public function testError(): void {
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 		$sut->error("This is an error");
 
 		self::assertSame(json_encode(["error" => "This is an error"]), (string)$sut);
 	}
 
 	public function testError_overridesCurrentProperties():void {
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 		$sut->set("one", "example");
 		$sut->error("This is an error");
 
@@ -111,7 +111,7 @@ class JsonDocumentTest extends TestCase {
 	}
 
 	public function testError_context():void {
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 		$context = [
 			"one" => "example",
 			"two" => "example",
@@ -127,7 +127,7 @@ class JsonDocumentTest extends TestCase {
 	}
 
 	public function testError_contextCustomPropertyName(): void {
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 		$context = [
 			"one" => "example",
 			"two" => "example",
@@ -143,22 +143,22 @@ class JsonDocumentTest extends TestCase {
 	}
 
 	public function testError_customPropertyNamesMustBeDifferent(): void {
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 		$context = [
 			"one" => "example",
 			"two" => "example",
 			"three" => "example",
 		];
 
-		self::expectException(JsonErrorCustomPropertyNameException::class);
+		self::expectException(JSONErrorCustomPropertyNameException::class);
 
 		$sut->error("This is an error", context: $context, property: "data", contextProperty: "data");
 	}
 
 	public function testError_disallowsSetAfterError():void {
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 
-		self::expectException(JsonErrorStateException::class);
+		self::expectException(JSONErrorStateException::class);
 
 		$sut->error("This is an error");
 		$sut->set("one", "example");
@@ -170,7 +170,7 @@ class JsonDocumentTest extends TestCase {
 			array_push($calls, [$message, $context]);
 		};
 
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 		$sut->setErrorCallback($callback);
 
 		$sut->error("Test");
@@ -185,7 +185,7 @@ class JsonDocumentTest extends TestCase {
 			array_push($calls, [$message, $context]);
 		};
 
-		$sut = new JsonDocument();
+		$sut = new JSONDocument();
 		$sut->setErrorCallback($callback);
 
 		$sut->error("Test", ["example" => "message"]);

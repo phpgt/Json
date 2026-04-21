@@ -1,6 +1,6 @@
 <?php
-use GT\Json\JsonObject;
-use GT\Json\JsonObjectBuilder;
+use GT\Json\JSONObject;
+use GT\Json\JSONObjectBuilder;
 
 require __DIR__ . "/../vendor/autoload.php";
 
@@ -28,12 +28,12 @@ $jsonString = <<<JSON
 }
 JSON;
 
-$builder = new JsonObjectBuilder();
+$builder = new JSONObjectBuilder();
 $json = $builder->fromJsonString($jsonString);
 
 echo "Type of object: ", $json->getString("object"), PHP_EOL;
 
-/** @var JsonObject $available */
+/** @var JSONObject $available */
 foreach($json->getArray("available") as $available) {
 	echo PHP_EOL;
 	echo "Currency: ", $available->getString("currency"), PHP_EOL;

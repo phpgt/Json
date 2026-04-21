@@ -1,7 +1,7 @@
 <?php
-namespace GT\Json\JsonPrimitive;
+namespace GT\Json\JSONPrimitive;
 
-class JsonArrayPrimitive extends JsonPrimitive {
+class JSONArrayPrimitive extends JSONPrimitive {
 	/** @return array<int, mixed> */
 	public function getPrimitiveValue():array {
 		return (array)$this->value;
