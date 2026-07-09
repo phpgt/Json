@@ -166,8 +166,8 @@ class JSONDocumentTest extends TestCase {
 
 	public function testSetErrorCallback():void {
 		$calls = [];
-		$callback = function(string $message, ?array $context = null)use(&$calls):void {
-			array_push($calls, [$message, $context]);
+		$callback = function(string $message, int $statusCode, ?array $context = null)use(&$calls):void {
+			array_push($calls, [$message, $statusCode, $context]);
 		};
 
 		$sut = new JSONDocument();
@@ -176,20 +176,38 @@ class JSONDocumentTest extends TestCase {
 		$sut->error("Test");
 		self::assertCount(1, $calls);
 		self::assertSame("Test", $calls[0][0]);
-		self::assertNull($calls[0][1]);
+		self::assertSame(400, $calls[0][1]);
+		self::assertNull($calls[0][2]);
 	}
 
 	public function testSetErrorCallback_context():void {
 		$calls = [];
-		$callback = function(string $message, ?array $context = null)use(&$calls):void {
-			array_push($calls, [$message, $context]);
+		$callback = function(string $message, int $statusCode, ?array $context = null)use(&$calls):void {
+			array_push($calls, [$message, $statusCode, $context]);
 		};
 
 		$sut = new JSONDocument();
 		$sut->setErrorCallback($callback);
 
-		$sut->error("Test", ["example" => "message"]);
+		$sut->error("Test", context: ["example" => "message"]);
 		self::assertCount(1, $calls);
-		self::assertSame(["example" => "message"], $calls[0][1]);
+		self::assertSame(400, $calls[0][1]);
+		self::assertSame(["example" => "message"], $calls[0][2]);
+	}
+
+	public function testSetErrorCallback_statusCode():void {
+		$calls = [];
+		$callback = function(string $message, int $statusCode, ?array $context = null)use(&$calls):void {
+			array_push($calls, [$message, $statusCode, $context]);
+		};
+
+		$sut = new JSONDocument();
+		$sut->setErrorCallback($callback);
+
+		$sut->error("Test", 422);
+		self::assertCount(1, $calls);
+		self::assertSame("Test", $calls[0][0]);
+		self::assertSame(422, $calls[0][1]);
+		self::assertNull($calls[0][2]);
 	}
 }
