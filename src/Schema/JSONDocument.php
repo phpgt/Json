@@ -9,7 +9,7 @@ use GT\Json\JSONTypeException;
 
 class JSONDocument {
 	private bool $hasError = false;
-	/** @var null|callable(string, null|array<string, mixed>):void */
+	/** @var null|callable(string, int, null|array<string, mixed>):void */
 	private $errorCallback = null;
 
 	public function __construct(
@@ -55,6 +55,7 @@ class JSONDocument {
 	 * properties may be set once an error is set.
 	 *
 	 * @param string $message The message to be set
+	 * @param int $statusCode The HTTP response status code associated with the error
 	 * @param null|array<string, mixed> $context An optional array containing error context to be returned
 	 * @param string $property Optional property name for the error message
 	 * @param string $contextProperty Optional property name for the error context array
@@ -63,6 +64,7 @@ class JSONDocument {
 	 */
 	public function error(
 		string $message,
+		int $statusCode = 400,
 		?array $context = null,
 		string $property = "error",
 		string $contextProperty = "errorContext"
@@ -80,7 +82,7 @@ class JSONDocument {
 
 		$this->hasError = true;
 		if($this->errorCallback !== null) {
-			call_user_func($this->errorCallback, $message, $context);
+			call_user_func($this->errorCallback, $message, $statusCode, $context);
 		}
 	}
 
