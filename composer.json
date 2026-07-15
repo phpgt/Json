@@ -35,8 +35,7 @@
 
 	"autoload-dev": {
 		"psr-4": {
-			"GT\\Json\\Test\\": "./test/phpunit",
-			"Gt\\Json\\Test\\": "./test/phpunit"
+			"GT\\Json\\Test\\": "./test/phpunit"
 		}
 	},
 
