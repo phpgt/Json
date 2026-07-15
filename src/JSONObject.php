@@ -1,7 +1,7 @@
 <?php
 namespace GT\Json;
 
-use Gt\DataObject\DataObject;
+use GT\DataObject\DataObject;
 use GT\Json\JSONPrimitive\JSONPrimitive;
 use Stringable;
 

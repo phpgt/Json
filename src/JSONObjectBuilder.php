@@ -1,7 +1,7 @@
 <?php
 namespace GT\Json;
 
-use Gt\DataObject\DataObjectBuilder;
+use GT\DataObject\DataObjectBuilder;
 use GT\Json\JSONPrimitive\JSONArrayPrimitive;
 use GT\Json\JSONPrimitive\JSONBoolPrimitive;
 use GT\Json\JSONPrimitive\JSONFloatPrimitive;

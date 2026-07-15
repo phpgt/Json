@@ -1,8 +1,7 @@
 <?php
 namespace GT\Json\Schema;
 
-use Gt\DataObject\DataObject;
-use GT\Json\JSONKvpObject;
+use GT\DataObject\DataObject;
 use GT\Json\JSONObject;
 use GT\Json\JSONObjectBuilder;
 use JsonSerializable;
