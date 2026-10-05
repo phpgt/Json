@@ -57,5 +57,10 @@
 			"type": "github",
 			"url": "https://github.com/sponsors/phpgt"
 		}
-	]
+	],
+	"config": {
+		"platform": {
+			"php": "8.2.0"
+		}
+	}
 }
