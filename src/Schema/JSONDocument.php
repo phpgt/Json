@@ -6,6 +6,7 @@ use GT\Json\JSONErrorStateException;
 use GT\Json\JSONKvpObject;
 use GT\Json\JSONObject;
 use GT\Json\JSONTypeException;
+use Stringable;
 
 class JSONDocument {
 	private bool $hasError = false;
@@ -32,7 +33,7 @@ class JSONDocument {
 	 * Set a value in the document using dot notation for nested objects.
 	 *
 	 * @param string $key The key to set, can use dot notation for nested objects
-	 * @param mixed $value The value to set
+	 * @param mixed $value The value to set; Stringable values are cast to strings
 	 * @throws JSONTypeException If the document object is not a JSONKvpObject
 	 */
 	public function set(string $key, mixed $value):void {
@@ -41,6 +42,10 @@ class JSONDocument {
 		}
 
 		$this->ensureJSONKvpObject();
+
+		if($value instanceof Stringable) {
+			$value = (string)$value;
+		}
 
 		if(!str_contains($key, ".")) {
 			$this->setSimpleKey($key, $value);
