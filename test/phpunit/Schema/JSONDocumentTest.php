@@ -61,6 +61,32 @@ class JSONDocumentTest extends TestCase {
 		self::assertSame($name, (string)$sut->get("name"));
 	}
 
+	public function testSet_stringable():void {
+		$value = new class implements \Stringable {
+			public function __toString():string {
+				return "John Carmack";
+			}
+		};
+		$sut = new JSONDocument();
+		$sut->set("name", $value);
+
+		self::assertSame("John Carmack", $sut->get("name"));
+		self::assertSame('{"name":"John Carmack"}', (string)$sut);
+	}
+
+	public function testSet_nestedStringable():void {
+		$value = new class {
+			public function __toString():string {
+				return "Computer Science";
+			}
+		};
+		$sut = new JSONDocument();
+		$sut->set("department.name", $value);
+
+		self::assertSame("Computer Science", $sut->get("department.name"));
+		self::assertSame('{"department":{"name":"Computer Science"}}', (string)$sut);
+	}
+
 	public function testSet_nested():void {
 		$sut = new JSONDocument();
 		$sut->set("department.name", "Computer Science");
