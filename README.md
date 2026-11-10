@@ -70,6 +70,10 @@ Check out the [PHP implementation of the Fetch API][fetch] that uses this librar
 [dataobject]: https://www.php.gt/dataobject
 [fetch]: https://www.php.gt/fetch
 
+## Root JSON arrays
+
+Root arrays returned by `JSONObjectBuilder::fromJsonString()` support `count()` and `foreach`. Iterators preserve keys and values and remain independent during nested or repeated loops. Empty `[]` values remain JSON arrays. See the [array documentation](https://github.com/phpgt/Json/wiki/Types-and-getters#arrays) for examples.
+
 # Proudly sponsored by
 
 [JetBrains Open Source sponsorship program](https://www.jetbrains.com/community/opensource/)

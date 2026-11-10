@@ -53,7 +53,7 @@ class JSONObjectBuilder extends DataObjectBuilder {
 		object|array|string|int|float|bool|null $jsonDecoded
 	):JSONObject {
 		// Handle associative arrays by converting to objects
-		if(is_array($jsonDecoded) && !is_int(key($jsonDecoded))) {
+		if(is_array($jsonDecoded) && $jsonDecoded !== [] && !is_int(key($jsonDecoded))) {
 			return $this->fromJsonDecoded((object)$jsonDecoded);
 		}
 
