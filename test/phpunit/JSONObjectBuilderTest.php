@@ -14,6 +14,17 @@ use GT\Json\JSONPrimitive\JSONStringPrimitive;
 use PHPUnit\Framework\TestCase;
 
 class JSONObjectBuilderTest extends TestCase {
+	public function testFromJsonString_emptyRootArrayRemainsAnArray():void {
+		$sut = new JSONObjectBuilder();
+
+		$result = $sut->fromJsonString("[]");
+
+		self::assertInstanceOf(\GT\Json\JSONPrimitive\JSONArrayPrimitive::class, $result);
+		self::assertSame(0, count($result));
+		self::assertSame([], iterator_to_array($result));
+		self::assertSame("[]", (string)$result);
+	}
+
 	private string $jsonStringSimpleKVP = <<<JSON
 		{
 			"id": 123,
