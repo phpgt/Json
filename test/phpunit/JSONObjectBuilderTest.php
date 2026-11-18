@@ -14,6 +14,17 @@ use GT\Json\JSONPrimitive\JSONStringPrimitive;
 use PHPUnit\Framework\TestCase;
 
 class JSONObjectBuilderTest extends TestCase {
+	public function testFromJsonString_emptyArrayAndObjectHaveDistinctTypes():void {
+		$sut = new JSONObjectBuilder();
+
+		$object = $sut->fromJsonString("{}");
+		$array = $sut->fromJsonString("[]");
+
+		self::assertInstanceOf(JSONKvpObject::class, $object);
+		self::assertInstanceOf(JSONArrayPrimitive::class, $array);
+		self::assertSame([], $array->getPrimitiveValue());
+	}
+
 	public function testFromJsonString_emptyRootArrayRemainsAnArray():void {
 		$sut = new JSONObjectBuilder();
 
